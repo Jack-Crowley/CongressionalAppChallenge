@@ -1,10 +1,8 @@
 .goals {
     width: 90vw;
-    height: 20vh;
     background-color: #B8BDB5;
     text-align: center;
     padding: 3vh 5vw;
-    overflow:auto; 
     padding-bottom: 50px;
 }
 
@@ -12,14 +10,19 @@
     color: rgb(19, 105, 19);
 }
 
+.hours-num {
+    font-size: 2.4rem;
+}
+
 .goal {
     background-color: #d0d4cd;
+    padding: 20px;
 }
 
 .goal-title {
     display: flex;
     padding: 0 10%;
-    justify-content: space-between;
+    justify-content: center;
 }
 
 .progress-bar {
@@ -38,4 +41,57 @@
 .progress .subtitle {
     margin: 0;
     padding: 0;
+}
+
+.goal-header {
+    font-size: 2rem;
+    margin: 0;
+}
+
+.goal-date {
+    font-size: 1.5rem;
+}
+
+.goal-header span {
+    margin: 0 50px;
+}
+
+.activities {
+    width: 90vw;
+    background-color: #889696;
+    padding: 3vh 5vw;
+    padding-bottom: 50px;
+}
+
+table {
+    width: 80%;
+    margin-left: 10%;
+    border-collapse:collapse;
+}
+
+th, td {
+    font-size: 1.4rem;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+tr {
+    border-bottom: #345f5f 1px solid;
+}
+
+.certificate a {
+    text-decoration: none;
+    color:black;
+    background-color: #B8BDB5;
+    display: inline-block;
+    padding: 3px;
+    transition: all .2s;
+}
+
+.certificate a:hover {
+    background-color: #d8ded5;
+}
+
+.certificate {
+    text-align: center;
 }
