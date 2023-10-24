@@ -1,0 +1,46 @@
+.banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+}
+
+nav {
+    background-color: rgba(224, 226, 219,.5);
+}
+
+nav .subheadings a {
+    color: #535555 !important;
+}
+
+.banner-text {
+    margin-top: 30vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-text div {
+    background-color: rgba(224, 226, 219,.5);
+    padding: 50px;
+    text-align: center;
+}
+
+.banner-text-content a {
+    background-color: #5F7470;
+    display: inline-block;
+    padding: 20px;
+    text-decoration: none;
+    color:black;
+    transition: all .2s;
+    border-radius: 20px;
+}
+
+.banner-text-content a:hover {
+    cursor: pointer;
+    background-color: #768a87;
+    
+}
