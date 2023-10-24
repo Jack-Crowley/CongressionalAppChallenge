@@ -1,0 +1,41 @@
+.goals {
+    width: 90vw;
+    height: 20vh;
+    background-color: #B8BDB5;
+    text-align: center;
+    padding: 3vh 5vw;
+    overflow:auto; 
+    padding-bottom: 50px;
+}
+
+.specific-hours {
+    color: rgb(19, 105, 19);
+}
+
+.goal {
+    background-color: #d0d4cd;
+}
+
+.goal-title {
+    display: flex;
+    padding: 0 10%;
+    justify-content: space-between;
+}
+
+.progress-bar {
+    width: 80%;
+    margin-left: 10%;
+    height: 30px;
+    background-color: black;
+}
+
+.progress {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    padding: 10px 20px;
+}
+
+.progress .subtitle {
+    margin: 0;
+    padding: 0;
+}
