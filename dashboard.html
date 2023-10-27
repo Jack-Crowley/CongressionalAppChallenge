@@ -30,8 +30,18 @@
                 <h2 class="goal-date">06/23/25</h2>
             </div>
             <div class="progress">
-                <div class="progress-bar"></div>
-                <h2 class="subtitle">50/100 Hours</h2>
+                <div class="bar">
+                    <div class="progress-bar-overlay"></div>
+                    <div class="progress-bar"></div>
+                </div>
+                <h2 class="subtitle"><span class="specific-hours">50</span>/<span class="total-hours">100</span> Hours</h2>
+                <script>
+                    let hoursReceived = parseInt(document.querySelector('.specific-hours').textContent, 10)
+                    let hoursTotal = parseInt(document.querySelector('.total-hours').textContent, 10)
+                    let w = hoursReceived / hoursTotal * 90;
+                    document.querySelector('.progress-bar-overlay').style.width = w + "%";
+                    let e = document.querySelector('.progress-bar').style.width = (80 - w/100*80) + "%";
+                </script>
             </div>
         </div>
     </div>

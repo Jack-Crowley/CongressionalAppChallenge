@@ -22,11 +22,26 @@
     justify-content: space-between;
 }
 
+.bar {
+    display: grid;
+    grid-template-columns: 4fr 4fr;
+    padding: 0;
+}
+
 .progress-bar {
     width: 80%;
-    margin-left: 10%;
+    margin-left: 0;
     height: 30px;
     background-color: black;
+}
+
+.progress-bar-overlay {
+    width: 0;
+    margin-left: 10%;
+    margin-right: 0;
+    height: 30px;
+    background-color: green;
+    border: 5px solid white;
 }
 
 .progress {
