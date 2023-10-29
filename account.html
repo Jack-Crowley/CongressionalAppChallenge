@@ -6,8 +6,10 @@
     <title>Document</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="./styles/dashboard.css">
+    <link rel="stylesheet" href="./styles/account.css">
     <link rel="stylesheet" href="./styles/nav.css">
 </head>
 <body>
@@ -16,35 +18,49 @@
             <a href=""><h1>VolunTeens</h1></a>
         </div>
         <div class="subheadings">
-            <a href="#">Dashboard</a>
+            <a href="dashboard.html">Dashboard</a>
             <a href="#">Opportunities</a>
             <a href="#">Groups</a>
             <a href="account.html">Account</a>
         </div>
     </nav>
-    <div class="goals">
-        <h1 class="hours-num"><span class="specific-hours">50</span> Hours Served</h1>
-        <div class="goal">
-            <div class="goal-title">
-                <h2 class="goal-header">Graduation <span>|</span> 06/23/25</h2>
-            </div>
-            <div class="progress">
-                <div class="bar">
-                    <div class="progress-bar-overlay"></div>
-                    <div class="progress-bar"></div>
+    <div class="acct-info">
+        <img src="/images/pfp-default.jpg" alt="">
+        <div class="details-container">
+            <div class="details-inner">
+                <h1 class="acct-name">John Smith</h1>
+                <div class="side-info">
+                    <div class="side-info-l" style="padding-right: 30px;">
+                        <span class="location">
+                            <h2>Location</h2>
+                            <p>07601</p>
+                        </span>
+                        <span class="school">
+                            <h2>School</h2>
+                            <p>Bergen County Academies</p>
+                        </span>
+                        <span class="email">
+                            <h2>Email Address</h2>
+                            <p>jonsmi@bergen.org</p>
+                        </span>
+                    </div>
+                    <div class="side-info-r" style="padding-left: 30px;">
+                        <span class="causes">
+                            <h2>My Causes</h2>
+                            <p>Add some causes you're interested in!</p>
+                        </span>
+                        <span class="skills">
+                            <h2>My Skills</h2>
+                            <p>Add some useful skills you have!</p>
+                        </span>
+                    </div>
                 </div>
-                <h2 class="subtitle"><span class="specific-hours">50</span>/<span class="total-hours">100</span> Hours</h2>
-                <script>
-                    let hoursReceived = parseInt(document.querySelector('.specific-hours').textContent, 10)
-                    let hoursTotal = parseInt(document.querySelector('.total-hours').textContent, 10)
-                    let w = hoursReceived / hoursTotal * 90;
-                    document.querySelector('.progress-bar-overlay').style.width = w + "%";
-                    document.querySelector('.progress-bar').style.width = (90 - w) + "%";
-                </script>
+                <!-- <button class="edit-btn"><img src="/images/edit-icon.png"></button> -->
+                <button class="edit-btn"><i class="fas fa-edit" style="color: #000000;"></i></i></button>
             </div>
         </div>
     </div>
-    <div class="upcoming">
+    <!-- <div class="upcoming">
         <h1 class="activities-header">Upcoming Volunteering Experiences</h1>
         <div class="events">
             <div class="event">
@@ -85,6 +101,6 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </div> -->
 </body>
 </html>
