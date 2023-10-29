@@ -39,7 +39,7 @@
                     let hoursTotal = parseInt(document.querySelector('.total-hours').textContent, 10)
                     let w = hoursReceived / hoursTotal * 90;
                     document.querySelector('.progress-bar-overlay').style.width = w + "%";
-                    let e = document.querySelector('.progress-bar').style.width = (80 - w/100*80) + "%";
+                    document.querySelector('.progress-bar').style.width = (90 - w) + "%";
                 </script>
             </div>
         </div>

@@ -26,30 +26,35 @@
 }
 
 .bar {
-    display: grid;
-    grid-template-columns: 4fr 4fr;
+    display: inline block;
+    /* grid-template-columns: 4fr 4fr; */
     padding: 0;
+    width: 100%;
+    /* border: 5px solid white; */
 }
 
 .progress-bar {
-    width: 80%;
+    width: 100%;
     margin-left: 0;
     height: 30px;
     background-color: black;
+    float: left;
+    margin-right: 5%;
 }
 
 .progress-bar-overlay {
     width: 0;
-    margin-left: 10%;
+    margin-left: 5%;
     margin-right: 0;
     height: 30px;
     background-color: green;
-    border: 5px solid white;
+    /* border: 5px solid white; */
+    float: left;
 }
 
 .progress {
     display: grid;
-    grid-template-columns: 3fr 1fr;
+    grid-template-columns: 2fr 2fr;
     padding: 10px 20px;
 }
 
