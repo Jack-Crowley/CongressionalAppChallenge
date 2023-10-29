@@ -1,3 +1,7 @@
+body {
+    overflow-x: hidden;
+}
+
 .goals {
     width: 90vw;
     background-color: #B8BDB5;
