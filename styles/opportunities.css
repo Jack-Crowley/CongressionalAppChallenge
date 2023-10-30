@@ -1,0 +1,110 @@
+.search {
+    background-color: #b8dfb8;
+    display: grid;
+    grid-template-columns: 4fr 2fr 2fr 1fr;
+    padding: 20px 300px;
+    column-gap: 20px;
+    height: 50px;
+    position: sticky;
+}
+
+.search input {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.search input[type=button] {
+    background-color: #4e835a;
+    border-radius: 20px;
+    transition: all .2s;
+}
+
+.search input[type=button]:hover {
+    background-color: #74b183;
+    cursor: pointer;
+}
+
+.search input[type=text] {
+    display: inline-block;
+    padding-left: 20px;
+    box-sizing: border-box;
+    outline: none;
+    font-size: 1.3rem;
+}
+
+.search a {
+    width: 100%;
+    background-color: #365c36;
+    color:white;
+    text-decoration: none;
+    display: inline-block;
+    height: 100%;
+    text-align: center;
+}
+
+.bigHeader {
+    text-align: center;
+    margin-top: 0;
+}
+
+.events {
+    padding: 30px;
+    background-color: #d6f0dd;
+}
+
+.event {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    padding: 20px 0;
+    margin: 0 100px;
+    transition: all .2s;
+}
+
+.event:hover {
+    cursor: pointer;
+    background-color: #a5d4b2;
+}
+
+.date {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+}
+
+.day {
+    font-size: 75px;
+    margin: 0;
+    padding: 0;
+}
+
+.month {
+    font-size: 37.5px;
+    margin:0;
+}
+
+.otherInfo > * {
+    margin: 0;
+}
+
+.otherInfo .name {
+    font-size: 2.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.company {
+    margin-top: 20px;
+}
+
+.otherInfo .company, .otherInfo .location {
+    font-size: 1.3rem;
+    line-height: 1;
+    font-weight: lighter;
+}
+
