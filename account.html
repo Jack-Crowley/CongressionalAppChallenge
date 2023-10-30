@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/71f2f76557.js" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="./styles/account.css">
+    <link rel="stylesheet" href="./styles/nav.css">
+</head>
+<body>
+    <nav>
+        <div class="name">
+            <a href=""><h1>VolunTeens</h1></a>
+        </div>
+        <div class="subheadings">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="#">Opportunities</a>
+            <a href="#">Groups</a>
+            <a href="account.html">Account</a>
+        </div>
+    </nav>
+    <div class="acct-info">
+        <img src="/images/pfp-default.jpg" alt="">
+        <div class="details-container">
+            <div class="details-inner">
+                <h1 class="acct-name" style="font-weight: 100;">Welcome, <span class="name-of-person" style="font-weight: 900;"><span class="user-first-name">John</span> <span class="user-last-name">Smith</span></span>!</h1>
+                <div class="side-info">
+                    <div class="side-info-l" style="padding-right: 30px;">
+                        <span class="location">
+                            <h2>Location</h2>
+                            <p>07601</p>
+                        </span>
+                        <span class="school">
+                            <h2>School</h2>
+                            <p>Bergen County Academies</p>
+                        </span>
+                        <span class="email">
+                            <h2>Email Address</h2>
+                            <p>jonsmi@bergen.org</p>
+                        </span>
+                        <span class="phone">
+                            <h2>Phone #</h2>
+                            <p>(123)-456-7890</p>
+                        </span>
+                    </div>
+                    <div class="side-info-r" style="padding-left: 30px;">
+                        <span class="causes">
+                            <h2>My Causes</h2>
+                            <p>Add some causes you're interested in!</p>
+                        </span>
+                        <br>
+                        <span class="skills">
+                            <h2>My Skills</h2>
+                            <p>Add some useful skills you have!</p>
+                        </span>
+                        <button class="edit-btn">
+                            <i class="fas fa-edit" style="color: #000000;"></i>
+                            <i class="fas fa-edit" style="color: #f0f0f0;"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- <button class="edit-btn"><img src="/images/edit-icon.png"></button> -->
+                
+            </div>
+        </div>
+    </div>
+    <div class="overlay" id="modalOverlay">
+        <div class="modal">
+            <button class="tablink profileTab" onclick="openTab(event, 'profile')">Profile</button>
+            <button class="tablink interestsTab" onclick="openTab(event, 'interests')">Interests</button>
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Edit Details</h2>
+            <div class="tabContent" id="profile">
+                <form class="details-form" style="text-align: left; position: relative;">
+                    <div style="margin-right: 20px;">
+                        <label for="first-name">First Name <span class="req">*</span></label><br>
+                        <input type="text" id="first-name" name="first-name" required><br><br>
+                        <label for="location">Location <span class="req">*</span></label><br>
+                        <input type="text" id="location" name="location" required><br><br>
+                        <label for="email">Email Address <span class="req">*</span></label><br>
+                        <input type="email" id="email" name="email" required><br><br>
+                        <!-- <label for="causes">Causes</label><br> -->
+                        <!-- <span class="causes-input" style="display: grid; grid-template-columns: auto auto;">
+
+                        </span> -->
+                        <span class="button-span">
+                            <button class="cancelButton">Cancel</button>
+                        </span>
+                    </div>
+                    <div style="margin-left: 20px;">
+                        <label for="last-name">Last Name <span class="req">*</span></label><br>
+                        <input type="text" id="last-name" name="last-name" required><br><br>
+                        <label for="school">School Name <span class="req">*</span></label><br>
+                        <input type="text" id="school" name="school" required><br><br>
+                        <label for="phone">Phone #</label><br>
+                        <input type="tel" id="phone" name="phone" pattern="\([0-9]{3}\)-[0-9]{3}-[0-9]{4}"><br><br>
+                        <!-- <label for="skills">Skills</label><br> -->
+                        <!-- <span class="skills-input" style="display: grid; grid-template-columns: auto auto;">
+
+                        </span> -->
+                        <span class="button-span">
+                            <button class="saveButton">Save</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="tabContent" id="interests" style="display: grid; grid-template-columns: 2fr 2fr 2fr 2fr;">
+                <div style="margin-right: 20px;">
+                    <label for="causes">Causes</label><br>
+                    <span class="causes-input">
+
+                    </span>
+                    
+                    <span class="button-span">
+                        <button class="cancelButton">Cancel</button>
+                    </span>
+                </div>
+                <div style="margin-left: 20px;">
+                    <label for="skills">Skills</label><br>
+                    <span class="skills-input">
+
+                    </span>
+                    
+                    <span class="button-span">
+                        <button class="saveButton">Save</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const openModalButton = document.querySelector('.edit-btn');
+        console.log(openModalButton)
+        const modalOverlay = document.getElementById('modalOverlay');
+        const closeModalButton = document.getElementById('closeModal');
+        const cancelModalButtons = document.getElementsByClassName('cancelButton');
+        const saveModalButtons = document.getElementsByClassName('saveButton');
+
+        const inputFields = ['first-name', 'last-name', 'location', 'school', 'email', 'phone']
+        const currentFields = ['span.user-first-name', 'span.user-last-name', 'span.location p', 'span.school p', 'span.email p', 'span.phone p']
+        const placeholders = ['John', 'Smith', 'Zip Code', 'Kennedy High School', 'xyz@gmail.com', '(123)-456-7890']
+
+        const causes = 'Animals,Arts & Culture,Children & Youth,Computers & Technology,Disabilities,Disaster Relief,Education & Literacy,Environment,Faith-Based,Health & Medicine,Homeless & Housing,Hunger,Justice & Legal,LGBTQ+,Race & Ethnicity,Seniors,Sports & Recreation,Women'.split(',')
+        const skills = 'Advocacy, Animal Care / Handling, Arts Administration, Child Care, Community Outreach, Computer Science, Crisis Intervention, Dance, Environmental Education, Event Planning / Management, Financial Literacy, Gardening, Fundraising, Language Skills, Marketing & Communications, Math / Science Instruction, Music Arts, Nursing, Painting, Photography, Public Speaking, Reading Comprehension, Sports Coaching, Tutoring, Web Design / UX, Writing, Youth Services'.split(', ')
+
+        openModalButton.addEventListener('click', () => {
+            for (let i=0; i<inputFields.length; i++) {
+                const inp = document.querySelector(`input#${inputFields[i]}`);
+                const curr = document.querySelector(`${currentFields[i]}`).textContent;
+                const ph = placeholders[i];
+                if (curr !== '') {
+                    inp.setAttribute('value', curr);
+                } else {
+                    inp.setAttribute('placeholder', ph);
+                }
+            }
+            const causesSpan = document.querySelector('span.causes-input');
+            for (let i=0; i<causes.length; i++) {
+                var x = document.createElement("INPUT");
+                x.setAttribute('type', 'checkbox');
+                x.setAttribute('id', causes[i])
+                x.setAttribute('name', causes[i])
+                var y = document.createElement("LABEL");
+                y.setAttribute('for', causes[i])
+                y.textContent = causes[i]
+                causesSpan.appendChild(x);
+                causesSpan.appendChild(y);
+            }
+            const skillsSpan = document.querySelector('span.skills-input');
+            for (let i=0; i<skills.length; i++) {
+                var x = document.createElement("INPUT");
+                x.setAttribute('type', 'checkbox');
+                x.setAttribute('id', skills[i])
+                x.setAttribute('name', skills[i])
+                var y = document.createElement("LABEL");
+                y.setAttribute('for', skills[i])
+                y.textContent = skills[i]
+                skillsSpan.appendChild(x);
+                skillsSpan.appendChild(y);
+            }
+            modalOverlay.style.display = 'block';
+        });
+
+        closeModalButton.addEventListener('click', () => {
+            modalOverlay.style.display = 'none';
+        });
+
+        for (const cancelModalButton of cancelModalButtons) {
+            cancelModalButton.addEventListener('click', () => {
+                modalOverlay.style.display = 'none';
+            });
+        }
+
+        for (const saveModalButton of saveModalButtons) {
+            saveModalButton.addEventListener('click', () => {
+                for (let i=0; i<inputFields.length; i++) {
+                    const inp = document.querySelector(`input#${inputFields[i]}`);
+                    const curr = document.querySelector(`${currentFields[i]}`);
+                    curr.textContent = inp.value;
+                }
+                modalOverlay.style.display = 'none';
+            });
+        }
+
+    </script>
+    <script>
+        document.getElementsByClassName("tablink")[0].click();
+
+        function openTab(evt, tabName) {
+            var i, x, tablinks;
+            x = document.getElementsByClassName("tabContent");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            document.getElementById(tabName).style.display = "block";
+        }
+    </script>
+</body>
+</html>

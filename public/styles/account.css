@@ -1,0 +1,173 @@
+.acct-info {
+    width: 90vw;
+    background-color: #33504e;;
+    text-align: left;
+    padding: 3vh 5vw;
+    padding-bottom: 50px;
+    display: grid;
+    grid-template-columns: 1fr 2.5fr;
+    /* grid-template-rows: auto auto;; */
+    position: relative;
+    /* vertical-align: middle; */
+}
+
+.acct-info img {
+    border-radius: 10px;
+    width: 75%;
+    /* margin: 0; */
+    /* position: absolute; */
+    /* top: 50%; */
+    /* -ms-transform: translateY(-50%); */
+    /* transform: translateY(-50%); */
+    /* margin-top: 33%; */
+    /* display: inline-block; */
+    /* position: relative; */
+    /* top: 50%; */
+    /* left: 50%; */
+    /* transform: translate(0%,-50%); */
+}
+
+.details-container {
+    background-color: rgb(224, 226, 219);
+    /* margin: 50px; */
+    border-radius: 20px;
+    /* text-align: center; */
+    /* margin: auto; */
+    /* position: relative; */
+    /* margin: 40px; */
+}
+
+.details-inner {
+    /* position: absolute; */
+    margin: 40px;
+    /* padding: 10px; */
+    /* width: 80%; */
+}
+
+.side-info {
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.edit-btn {
+    border: none; /* Remove borders */
+    color: black; /* White text */
+    padding: 14px; /* Some padding */
+    margin-top: 90px;
+    margin-bottom: 20px;
+    font-size: 28px;
+    cursor: pointer; /* Mouse pointer on hover */
+    float: right;
+    border-radius: 10px;
+}
+
+.edit-btn:hover {
+    background-color: black;
+}
+
+.edit-btn i:nth-child(2) {
+    display: none; 
+}
+  
+.edit-btn:hover i:nth-child(1) {
+    display: none;
+}
+  
+.edit-btn:hover i:nth-child(2) {
+    display: inline;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+}
+
+/* Style for the modal */
+.modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+/* Style for the close button */
+.close {
+    position: absolute;
+    top: 3px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 30px;
+}
+
+.close:hover {
+    color: red;
+}
+
+.details-form {
+    display: grid;
+    grid-template-columns: 2fr 2fr;
+}
+
+.details-form label {
+    font-size: 12px;
+}
+
+.details-form input {
+    font-size: 20px;
+}
+
+.req {
+    color: red;
+}
+
+.button-span {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cancelButton, .saveButton {
+    /* margin: 0; */
+    /* position: absolute; */
+    /* left: 50%; */
+    /* -ms-transform: translateX(-50%); */
+    /* transform: translateX(-50%); */
+    width: 60%;
+    border-radius: 5px;
+    background: #ffffff;
+    border-width: 0.3rem;
+    font-family: 'Poppins';
+    /* font-weight: bold; */
+    font-size: medium;
+    font-weight: 600;
+}
+
+.cancelButton {
+    border-color: red;
+}
+
+.cancelButton:hover {
+    cursor: pointer;
+    background-color: red;
+    color: white;
+}
+
+.saveButton {
+    border-color: green;
+}
+
+.saveButton:hover {
+    cursor: pointer;
+    background-color: green;
+    color: white;
+}
