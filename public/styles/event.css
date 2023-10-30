@@ -1,0 +1,69 @@
+body {
+    overflow: hidden;
+}
+
+.banner {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-image: -webkit-linear-gradient(left,
+            rgba(63, 80, 55, 0) 0,
+            rgba(63, 80, 55, 0) 40%,
+            rgba(63, 80, 55, .5) 50%,
+            rgb(63, 80, 55) 60%),
+        url("/images/homepage.png");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    padding-left: 60%;
+    box-sizing: border-box;
+}
+
+.information {
+    text-align: center;
+    color: white;
+}
+
+.information h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.information h3 {
+    font-size: 1.4rem;
+    line-height: .5;
+}
+
+.information h4 {
+    font-size: 1.5rem;
+    padding: 0 2%;
+}
+
+.line {
+    width: 60%;
+    margin-left: 20%;
+    height: 1px;
+    background-color: #85e480;
+}
+
+nav {
+    background-color: rgb(224, 226, 219);
+}
+
+nav .subheadings a {
+    color: #535555 !important;
+}
+
+.register:hover {
+    background-color: #92e48e;
+}
+
+.register {
+    display: inline-block;
+    background-color: #85e480;
+    padding: 20px 50px;
+    text-decoration: none;
+    color:black;
+    font-size: 2rem;
+    border-radius: 20px;
+    margin-top: 100px;
+}

@@ -32,6 +32,10 @@ app.get("/account", async (req, res) => {
     res.render('account')
 });
 
+app.get("/event/:eventid", async (req, res) => {
+    res.render('event')
+});
+
 app.listen(PORT, () => {
     console.log(`App server listening on ${PORT}. (Go to http://localhost:${PORT})`);
 });
