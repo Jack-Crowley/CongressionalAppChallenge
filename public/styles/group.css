@@ -1,0 +1,150 @@
+.group {
+    background-color: rgb(173, 230, 178);
+}
+
+.top {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    padding: 50px 100px;
+    justify-content: center;
+    gap: 50px
+}
+
+.top img {
+    width: 20%;
+}
+
+.information h1 {
+    font-size: 3rem;
+    margin: 0;
+    line-height: .8;
+}
+
+.information a {
+    display: inline-block;
+    background-color: green;
+    text-decoration: none;
+    color: white;
+    padding: 10px 25px;
+    font-size: 1.3rem;
+    border-radius: 20px;
+}
+
+.information a:hover {
+    background-color: #238e23;
+}
+
+.extraInformation {
+    background-color: #559a55;
+    padding-left: 50px;
+    padding-top: 50px;
+}
+
+.options > a {
+    color: white;
+    display: inline-block;
+    margin-right: 30px;
+    font-size: 1.5rem;
+    padding: 0 10px;
+    padding-bottom: 2px;
+    text-decoration: none;
+}
+
+.options > a:hover {
+    border-bottom: #297529 1px solid;
+}
+
+.active {
+    border-bottom: #153e15 1px solid !important;
+}
+
+.sections {
+    padding-bottom: 20px;
+}
+
+.event {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    padding: 20px 0;
+    margin: 0 100px;
+    transition: all .1s;
+}
+
+.event:hover {
+    cursor: pointer;
+    background-color: #72b486;
+}
+
+.date {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    line-height: 1;
+}
+
+.day {
+    font-size: 75px;
+    margin: 0;
+    padding: 0;
+}
+
+.month {
+    font-size: 37.5px;
+    margin:0;
+}
+
+.otherInfo > * {
+    margin: 0;
+}
+
+.otherInfo .name {
+    font-size: 2.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.company {
+    margin-top: 20px;
+}
+
+.otherInfo .company, .otherInfo .location {
+    font-size: 1.3rem;
+    line-height: 1;
+    font-weight: lighter;
+}
+
+.contact h1 {
+    padding-left: 200px;
+}
+
+.member {
+    padding: 20px 0;
+    margin: 0 200px;
+}
+
+.member span {
+    font-size: 2rem;
+    background-color: purple;
+    padding: 20px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.member h1 {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.events, .contact, .members {
+    display: none;
+    transition: all .5s;
+    opacity: 0;
+}
+
+.activeSection {
+    display: block;
+    padding-bottom: 20px;
+    opacity: 1;
+}

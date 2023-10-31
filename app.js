@@ -36,6 +36,10 @@ app.get("/event/:eventid", async (req, res) => {
     res.render('event')
 });
 
+app.get("/group/:groupid", async (req, res) => {
+    res.render('group')
+});
+
 app.listen(PORT, () => {
     console.log(`App server listening on ${PORT}. (Go to http://localhost:${PORT})`);
 });
