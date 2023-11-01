@@ -45,3 +45,15 @@ nav .subheadings a {
     cursor: pointer;
     background-color: #768a87;   
 }
+
+.loginButton {
+    background-color: #5eb8aa;
+    color:white;
+    display: inline-block;
+    padding: 5px 20px !important;
+    border-radius: 10px;
+}
+
+.loginButton:hover {
+    background-color: #368e81 !important;
+}

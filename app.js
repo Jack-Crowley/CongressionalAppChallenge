@@ -33,22 +33,28 @@ function getSQLQuery(fileName) {
 }
 
 async function accountRegister(req, res, next) {
-    await new Promise((resolve, reject) => {
-        db.execute(getSQLQuery("findIfNewUser"), [req.oidc.user.email], (error, results) => {
-            console.log("Test1")
-            if (error)
-                res.status(500).send(error);
-            else {
-                if (results.length >= 1) {
-                    console.log("Test")
-                    next()
-                }
+    if (!req.oidc.isAuthenticated()) {
+        req.redirect("/register")
+    }
+    else {
+        await new Promise((resolve, reject) => {
+            db.execute(getSQLQuery("findIfNewUser"), [req.oidc.user.email], (error, results) => {
+                console.log("Test1")
+                if (error)
+                    res.status(500).send(error);
                 else {
-                    console.log("Test")
-                    res.redirect("/register")}
-            }
+                    if (results.length >= 1) {
+                        console.log("Test")
+                        next()
+                    }
+                    else {
+                        console.log("Test")
+                        res.redirect("/register")
+                    }
+                }
+            });
         });
-    });
+    }
 }
 
 app.get("/opportunities", async (req, res) => {
@@ -70,7 +76,7 @@ app.post("/opportunities/:eventID", async (req, res) => {
                     res.status(500).send(error);
                 else
                     res.send(results)
-            });        
+            });
     });
 })
 
@@ -80,10 +86,10 @@ app.get('/logintest', (req, res) => {
 
 app.get('/profile', requiresAuth(), accountRegister, (req, res) => {
     res.send(JSON.stringify(req.oidc.user));
-  });
+});
 
 app.get("/", async (req, res) => {
-    res.render('index')
+    res.render(req.oidc.isAuthenticated() ? 'index' : 'index-loggedOut');
 });
 
 app.get("/groups", async (req, res) => {
