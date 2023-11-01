@@ -1,4 +1,4 @@
 SELECT Location.address as address
-FROM Location, upcomingEvent
+FROM `Location`, `Upcoming Event`
 where eventID=?
-and locationID = location
+and locationID = `Upcoming Event`.location

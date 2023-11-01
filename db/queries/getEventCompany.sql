@@ -1,4 +1,4 @@
 SELECT Company.name as name
-FROM Company, upcomingEvent
+FROM Company, `Upcoming Event`
 where eventID=?
-and Company.companyID = upcomingEvent.eventID
+and Company.companyID = `Upcoming Event`.eventID

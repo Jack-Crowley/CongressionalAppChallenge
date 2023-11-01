@@ -34,9 +34,11 @@
                     <%=groupName%>
                 </h1>
                 <h2>
-                    <%=members.length%>
+                    <%=members.length%> Members
                 </h2>
-                <a href="" class="request">Request To Join</a>
+                <% if (!inGroup) { %>
+                    <a href="" class="request">Request To Join</a>
+                <%}%>
             </div>
         </div>
     </div>
@@ -74,7 +76,7 @@
             <h1>Email: <%= groupEmail%></h1>
         </div>
         <div class="members">
-            <% members.forEach((member) => {
+            <% members.forEach((member) => { %>
                 <div class="member">
                     <span><%= `${member.firstName[0]+member.lastName[0]}` %></span>
                     <h1><%=`${member.firstName+" "+member.lastName}` %></h1>

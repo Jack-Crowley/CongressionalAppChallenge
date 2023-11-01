@@ -24,12 +24,12 @@
     </nav>
     <div class="banner">
         <div class="information">
-            <h1><%= line %></h1>
+            <h1><%= name %></h1>
             <div class="line"></div>
             <h3>Hosted By: <span><%= company%></span></h3>
-            <% date = new Date(event.date) %>
+            <% date = new Date(date) %>
             <h3>Date: <%=`${date.getMonth()+1}/${date.getDate()}/${date.getYear()+1900}`%></h3>
-            <h3>Time: <%=date.getTime()%></h3>
+            <h3>Time: <%=date.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })%></h3>
             <h3>Members Attending: <%= count %></h3>
             <h3>Location: <%= location %></h3>
             <h4><%= description%></h4>

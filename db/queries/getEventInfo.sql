@@ -1,3 +1,3 @@
 select name, description, date
-from upcomingEvent
+from `Upcoming Event`
 where eventID = ?
