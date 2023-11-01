@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles/registration.css">
+    <title>Registration System</title>
+</head>
+<body>
+    <div class="registration-container">
+        <form id="registration-form" autocomplete="off">
+            <div class="slide">
+                <h2>Step 1: Personal Info</h2>
+                <input type="text" id="name" placeholder="Name" required>
+                <select id="school" required>
+                    <option value="" disabled selected>Select School</option>
+                    <option value="School A">School A</option>
+                    <option value="School B">School B</option>
+                    <!-- Add more schools as needed -->
+                </select>
+            </div>
+            <div class="slide">
+                <h2>Step 2: Contact Info</h2>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="tel" id="phone" placeholder="Phone" required>
+            </div>
+            <div class="slide">
+                <h2>Step 3: Upload Picture</h2>
+                <input type="file" id="picture" accept="image/*" required>
+                <button id="scanButton">Scan</button>
+                <pre id="result"></pre>
+                <script src="/scripts/registration.js"></script>
+            </div>
+            <div class="slide">
+                <h2>Registration Complete</h2>
+                <button type="submit">Submit</button>
+            </div>
+            <div class="progress-bar"></div>
+            <!-- ... (previous HTML code) ... -->
+            <div class="slide-navigation">
+                <button id="prev-button" onclick="moveSlide(-1)" style="float: left; width: 50%;">Previous</button>
+                <button id="next-button" onclick="moveSlide(1)" style="float: right; width: 50%;">Next</button>
+            </div>
+        </form>
+    </div>
+    <script src="/scripts/registration.js"></script>
+</body>
+</html>

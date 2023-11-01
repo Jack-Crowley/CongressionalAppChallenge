@@ -65,6 +65,10 @@ app.get("/account", async (req, res) => {
     res.render('account')
 });
 
+app.get("/registration", async (req, res) => {
+    res.render('registration')
+});
+
 app.get("/event/:eventid", async (req, res) => {
     res.render('event')
 });
