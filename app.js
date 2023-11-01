@@ -1,5 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser')
+const fs = require("fs");
+const db = require('./db/db_connection');
 
 const app = express();
 const PORT = 3000;
@@ -12,8 +14,18 @@ app.use(express.static('public'));
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
 
+function getSQLQuery(fileName) {
+    return fs.readFileSync(__dirname + `/db/queries/${fileName}.sql`, { encoding: "UTF-8" });
+}
+
 app.get("/opportunities", async (req, res) => {
-    res.render('opportunities')
+    db.execute(getSQLQuery("getAllUpcomingEvents"), (error, results) => {
+        if (error)
+            res.status(500).send(error);
+        else
+        res.render('opportunities', {results:results})    
+    });
+    
 });
 
 app.get("/", async (req, res) => {
