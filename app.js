@@ -32,6 +32,19 @@ function getSQLQuery(fileName) {
     return fs.readFileSync(__dirname + `/db/queries/${fileName}.sql`, { encoding: "UTF-8" });
 }
 
+async function getStudentID(email) {
+    return await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getStudentIDFromEmail"), [email], async (error, results) => {
+            if (error) {
+                console.log(error);
+                resolve(null);
+            }
+            else
+                resolve(results[0].studentID)
+        });
+    });
+}
+
 async function accountRegister(req, res, next) {
     if (!req.oidc.isAuthenticated()) {
         req.redirect("/register")
@@ -97,7 +110,58 @@ app.get("/groups", async (req, res) => {
 });
 
 app.get("/dashboard", async (req, res) => {
-    res.render('dashboard')
+    let totalHours = 0
+    let pastEvents;
+    let upcomingEvents;
+    let studentID = await getStudentID(req.oidc.user.email);
+
+    // Total hours
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getHours"), [studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                totalHours = (results[0].totalHours == null) ? 0 : results[0].totalHours
+            }
+            resolve(0)
+        });
+    });
+
+    // Upcoming events
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getUpcomingEvents"), [studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                console.log(results)
+                upcomingEvents = results
+            }
+            resolve(0)
+        });
+    });
+
+    // Past events
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getPastEvents"), [studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                console.log(results)
+                pastEvents = results
+            }
+            resolve(0)
+        });
+    });
+
+    console.log(upcomingEvents[0])
+
+    res.render("dashboard", {totalHours:totalHours, upcomingEvents:upcomingEvents, pastEvents:pastEvents})
 });
 
 app.get("/account", async (req, res) => {
