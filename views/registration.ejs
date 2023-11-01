@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/styles/registration.css">
+    <script src="https://cdn.rawgit.com/naptha/tesseract.js/1.0.10/dist/tesseract.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
     <title>Registration System</title>
 </head>
 <body>
@@ -26,10 +28,10 @@
             </div>
             <div class="slide">
                 <h2>Step 3: Upload Picture</h2>
-                <input type="file" id="picture" accept="image/*" required>
+                <input type="file" id="imageInput" accept="image/*" required>
                 <button id="scanButton">Scan</button>
                 <pre id="result"></pre>
-                <script src="/scripts/registration.js"></script>
+                <!-- <script src="/scripts/registration.js"></script> -->
             </div>
             <div class="slide">
                 <h2>Registration Complete</h2>
@@ -38,8 +40,8 @@
             <div class="progress-bar"></div>
             <!-- ... (previous HTML code) ... -->
             <div class="slide-navigation">
-                <button id="prev-button" onclick="moveSlide(-1)" style="float: left; width: 50%;">Previous</button>
-                <button id="next-button" onclick="moveSlide(1)" style="float: right; width: 50%;">Next</button>
+                <button id="prev-button" style="float: left; width: 50%;">Previous</button>
+                <button id="next-button" style="float: right; width: 50%;">Next</button>
             </div>
         </form>
     </div>

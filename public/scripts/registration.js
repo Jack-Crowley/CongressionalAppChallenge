@@ -1,6 +1,9 @@
 const form = document.getElementById('registration-form');
 const slides = document.querySelectorAll('.slide');
 const progressBar = document.querySelector('.progress-bar');
+// const tesseract = require('tesseract.js');
+// import { createWorker } from 'tesseract.js';
+// import 'tesseract.js';
 let currentSlide = 0;
 
 function updateProgressBar() {
@@ -63,18 +66,22 @@ document.addEventListener('DOMContentLoaded', () => {
     scanButton.addEventListener('click', () => {
         const file = imageInput.files[0];
         if (file) {
-            const worker = Tesseract.createWorker({
-                logger: m => console.log(m),
-            });
+            // const worker = tessearct.createWorker({
+            //     logger: m => console.log(m),
+            // });
 
-            (async () => {
-                await worker.load();
-                await worker.loadLanguage('eng');
-                await worker.initialize('eng');
-                const { data: { text } } = await worker.recognize(file);
-                resultElement.textContent = text;
-                await worker.terminate();
-            })();
+            // (async () => {
+            //     await worker.load();
+            //     await worker.loadLanguage('eng');
+            //     await worker.initialize('eng');
+            //     const { data: { text } } = await worker.recognize(file);
+            //     resultElement.textContent = text;
+            //     await worker.terminate();
+            // })();
+            const t = new Tesseract();
+            t.setImage(file);
+            t.recognize();
+            resultElement.textContent = t.getText();
         }
     });
 });
