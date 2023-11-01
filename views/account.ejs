@@ -159,6 +159,7 @@
                 }
             }
             const causesSpan = document.querySelector('span.causes-input');
+            causesSpan.innerHTML = "";
             for (let i=0; i<causes.length; i++) {
                 var x = document.createElement("INPUT");
                 x.setAttribute('type', 'checkbox');
@@ -171,6 +172,7 @@
                 causesSpan.appendChild(y);
             }
             const skillsSpan = document.querySelector('span.skills-input');
+            skillsSpan.innerHTML = "";
             for (let i=0; i<skills.length; i++) {
                 var x = document.createElement("INPUT");
                 x.setAttribute('type', 'checkbox');
