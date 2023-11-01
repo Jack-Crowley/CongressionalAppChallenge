@@ -175,12 +175,14 @@ app.get("/registration", async (req, res) => {
 
 app.get("/event/:eventID", async (req, res) => {
     let eventID = req.params.eventID;
+    let studentID = await getStudentID(req.oidc.user.email)
     let eventName;
     let date;
     let eventDescription;
     let company;
     let count;
     let location;
+    let inEvent;
 
     // name and description
     await new Promise((resolve, reject) => {
@@ -240,7 +242,21 @@ app.get("/event/:eventID", async (req, res) => {
         });
     });
 
-    res.render('event', { name: eventName, description: eventDescription, company: company, location: location, count: count, date: date })
+    // Check in group
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("checkIfEvent"), [eventID, studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                inEvent = results.length == 1;
+            }
+            resolve(0)
+        });
+    });
+
+    res.render('event', { id: eventID, name: eventName, description: eventDescription, company: company, location: location, count: count, date: date, inEvent:inEvent })
 });
 
 app.get("/group/join/:joincode", async (req, res) => {
@@ -251,7 +267,7 @@ app.get("/group/join/:joincode", async (req, res) => {
             res.redirect("/groups")
             return
         }
-        
+
         let groupID = results[0].groupID
 
         if (error) {
@@ -284,6 +300,21 @@ app.get("/group/join/:joincode", async (req, res) => {
         }
     });
 })
+
+app.get("/event/register/:eventID", async (req, res) => {
+    let eventID = req.params.eventID;
+    let studentID = await getStudentID(req.oidc.user.email);
+
+    db.execute(getSQLQuery("addToEvent"), [eventID, studentID], (error, results) => {
+        if (error) {
+            console.log(error)
+            res.status(500).send(error);
+        }
+        else {
+            res.redirect("/event/"+eventID)
+        }
+    });
+});
 
 app.get("/group/:groupid", async (req, res) => {
     let studentID = await getStudentID(req.oidc.user.email)

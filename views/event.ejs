@@ -33,7 +33,9 @@
             <h3>Members Attending: <%= count %></h3>
             <h3>Location: <%= location %></h3>
             <h4><%= description%></h4>
-            <a href="#" class="register">Register</a>
+            <% if (!inEvent) { %>
+                <a href="/event/register/<%=id%>" class="register">Register</a>
+            <% } %>
         </div>
     </div>
     
