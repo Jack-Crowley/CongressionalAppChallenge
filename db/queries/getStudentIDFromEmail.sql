@@ -1,4 +1,4 @@
-SELECT studentID
+SELECT Student.studentID
 FROM Student, Account
-WHERE Student.accountID = account.accountID
-AND email=? 
+WHERE Student.accountID = Account.accountID
+AND Account.email=? 

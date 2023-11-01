@@ -32,6 +32,19 @@ function getSQLQuery(fileName) {
     return fs.readFileSync(__dirname + `/db/queries/${fileName}.sql`, { encoding: "UTF-8" });
 }
 
+async function getStudentID(email) {
+    return await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getStudentIDFromEmail"), [email], async (error, results) => {
+            if (error) {
+                console.log(error);
+                resolve(null);
+            }
+            else
+                resolve(results[0].studentID)
+        });
+    });
+}
+
 async function accountRegister(req, res, next) {
     if (!req.oidc.isAuthenticated()) {
         req.redirect("/register")
@@ -62,7 +75,8 @@ app.get("/opportunities", async (req, res) => {
         if (error)
             res.status(500).send(error);
         else
-            res.render('opportunities', { results: results })
+            console.log(results)
+        res.render('opportunities', { results: results })
     });
 });
 
@@ -80,24 +94,75 @@ app.post("/opportunities/:eventID", async (req, res) => {
     });
 })
 
-app.get('/logintest', (req, res) => {
-    res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-});
-
-app.get('/profile', requiresAuth(), accountRegister, (req, res) => {
-    res.send(JSON.stringify(req.oidc.user));
-});
-
 app.get("/", async (req, res) => {
     res.render(req.oidc.isAuthenticated() ? 'index' : 'index-loggedOut');
 });
 
 app.get("/groups", async (req, res) => {
-    res.render('groups')
+    let studentID = await getStudentID(req.oidc.user.email)
+
+    db.execute(getSQLQuery("getStudentGroups"), [studentID], (error, results) => {
+        if (error)
+            res.status(500).send(error);
+        else
+            res.render('groups', { results: results })
+    });
+
 });
 
 app.get("/dashboard", async (req, res) => {
-    res.render('dashboard')
+    let totalHours = 0
+    let pastEvents;
+    let upcomingEvents;
+    let studentID = await getStudentID(req.oidc.user.email);
+
+    // Total hours
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getHours"), [studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                totalHours = (results[0].totalHours == null) ? 0 : results[0].totalHours
+            }
+            resolve(0)
+        });
+    });
+
+    // Upcoming events
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getUpcomingEvents"), [studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                console.log(results)
+                upcomingEvents = results
+            }
+            resolve(0)
+        });
+    });
+
+    // Past events
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getPastEvents"), [studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                console.log(results)
+                pastEvents = results
+            }
+            resolve(0)
+        });
+    });
+
+    console.log(upcomingEvents[0])
+
+    res.render("dashboard", { totalHours: totalHours, upcomingEvents: upcomingEvents, pastEvents: pastEvents })
 });
 
 app.get("/account", async (req, res) => {
@@ -108,12 +173,219 @@ app.get("/registration", async (req, res) => {
     res.render('registration')
 });
 
-app.get("/event/:eventid", async (req, res) => {
-    res.render('event')
+app.get("/event/:eventID", async (req, res) => {
+    let eventID = req.params.eventID;
+    let studentID = await getStudentID(req.oidc.user.email)
+    let eventName;
+    let date;
+    let eventDescription;
+    let company;
+    let count;
+    let location;
+    let inEvent;
+
+    // name and description
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getEventInfo"), [eventID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                eventName = results[0].name
+                eventDescription = results[0].description
+                date = results[0].date
+            }
+            resolve(0)
+        });
+    });
+
+    // Company     
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getEventCompany"), [eventID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                company = results[0].name
+            }
+            resolve(0)
+        });
+    });
+
+    // Location
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getEventLocation"), [eventID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                location = results[0].address
+            }
+            resolve(0)
+        });
+    });
+
+    // Member Count
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getMemberCount"), [eventID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                count = results[0].count
+            }
+            resolve(0)
+        });
+    });
+
+    // Check in group
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("checkIfEvent"), [eventID, studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                inEvent = results.length == 1;
+            }
+            resolve(0)
+        });
+    });
+
+    res.render('event', { id: eventID, name: eventName, description: eventDescription, company: company, location: location, count: count, date: date, inEvent:inEvent })
+});
+
+app.get("/group/join/:joincode", async (req, res) => {
+    let joinCode = req.params.joincode;
+    db.execute(getSQLQuery("findGroupFromJoinCode"), [joinCode], async (error, results) => {
+        let studentID = await getStudentID(req.oidc.user.email);
+        if (results.length == 0) {
+            res.redirect("/groups")
+            return
+        }
+
+        let groupID = results[0].groupID
+
+        if (error) {
+            console.log(error)
+            res.status(500).send(error);
+        }
+        else {
+            db.execute(getSQLQuery("checkIfGroup"), [groupID, studentID], (error, results) => {
+                if (error) {
+                    console.log(error)
+                    res.status(500).send(error);
+                }
+                else {
+                    if (results.length == 0) {
+                        db.execute(getSQLQuery("addToGroup"), [groupID, studentID], (error, results) => {
+                            if (error) {
+                                console.log(error)
+                                res.status(500).send(error);
+                            }
+                            else {
+                                res.redirect("/groups")
+                            }
+                        });
+                    }
+                    else {
+                        res.redirect("/groups")
+                    }
+                }
+            });
+        }
+    });
+})
+
+app.get("/event/register/:eventID", async (req, res) => {
+    let eventID = req.params.eventID;
+    let studentID = await getStudentID(req.oidc.user.email);
+
+    db.execute(getSQLQuery("addToEvent"), [eventID, studentID], (error, results) => {
+        if (error) {
+            console.log(error)
+            res.status(500).send(error);
+        }
+        else {
+            res.redirect("/event/"+eventID)
+        }
+    });
 });
 
 app.get("/group/:groupid", async (req, res) => {
-    res.render('group')
+    let studentID = await getStudentID(req.oidc.user.email)
+    let groupID = req.params.groupid;
+    let groupName;
+    let groupEmail;
+    let members;
+    let events;
+    let inGroup;
+
+    // Name and email
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getGroupFromID"), [groupID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                groupName = results[0].name
+                groupEmail = results[0].email
+
+            }
+            resolve(0)
+        });
+    });
+
+    // Members
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getMemberFromGroup"), [groupID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                members = results
+            }
+            resolve(0)
+        });
+    });
+
+    // Events
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getGroupEvents"), [groupID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                events = results;
+            }
+            resolve(0)
+        });
+    });
+
+    // Check in group
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("checkIfGroup"), [groupID, studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                inGroup = results.length == 1;
+            }
+            resolve(0)
+        });
+    });
+
+    console.log(events)
+
+    res.render('group', { groupName: groupName, groupEmail: groupEmail, members: members, events: events, inGroup: inGroup })
 });
 
 app.listen(PORT, () => {
