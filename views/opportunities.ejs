@@ -38,72 +38,19 @@
     </div>
     <div class="events">
         <h1 class="bigHeader">Opportunities</h1>
-        <div class="event">
-            <div class="date">
-                <h1 class="month">OCT</h1>
-                <h1 class="day">28</h1>
-            </div>
-            <div class="otherInfo">
-                <h1 class="name">Some Annual Club Event Thingy</h1>
-                <h2 class="company">Some Random Farm</h2>
-                <h2 class="location">Some Random Location (1.4 Miles)</h2>
-            </div>
-         </div>
-         <div class="event">
-            <div class="date">
-                <h1 class="month">OCT</h1>
-                <h1 class="day">28</h1>
-            </div>
-            <div class="otherInfo">
-                <h1 class="name">Some Annual Club Event Thingy</h1>
-                <h2 class="company">Some Random Farm</h2>
-                <h2 class="location">Some Random Location (1.4 Miles)</h2>
-            </div>
-         </div>
-         <div class="event">
-            <div class="date">
-                <h1 class="month">OCT</h1>
-                <h1 class="day">28</h1>
-            </div>
-            <div class="otherInfo">
-                <h1 class="name">Some Annual Club Event Thingy</h1>
-                <h2 class="company">Some Random Farm</h2>
-                <h2 class="location">Some Random Location (1.4 Miles)</h2>
-            </div>
-         </div>
-         <div class="event">
-            <div class="date">
-                <h1 class="month">OCT</h1>
-                <h1 class="day">28</h1>
-            </div>
-            <div class="otherInfo">
-                <h1 class="name">Some Annual Club Event Thingy</h1>
-                <h2 class="company">Some Random Farm</h2>
-                <h2 class="location">Some Random Location (1.4 Miles)</h2>
-            </div>
-         </div>
-         <div class="event">
-            <div class="date">
-                <h1 class="month">OCT</h1>
-                <h1 class="day">28</h1>
-            </div>
-            <div class="otherInfo">
-                <h1 class="name">Some Annual Club Event Thingy</h1>
-                <h2 class="company">Some Random Farm</h2>
-                <h2 class="location">Some Random Location (1.4 Miles)</h2>
-            </div>
-         </div>
-         <div class="event">
-            <div class="date">
-                <h1 class="month">OCT</h1>
-                <h1 class="day">28</h1>
-            </div>
-            <div class="otherInfo">
-                <h1 class="name">Some Annual Club Event Thingy</h1>
-                <h2 class="company">Some Random Farm</h2>
-                <h2 class="location">Some Random Location (1.4 Miles)</h2>
-            </div>
-         </div>
+        <% results.forEach((event) => { %>
+            <div class="event">
+                <div class="date">
+                    <h1 class="month"><%= new Date(event.date).toLocaleString('en-US', { month: 'short' }).toUpperCase() %></h1>
+                    <h1 class="day"><%= new Date(event.date).getDate() %></h1>
+                </div>
+                <div class="otherInfo">
+                    <h1 class="name"><%= event.name %></h1>
+                    <h2 class="company">n/a</h2>
+                    <h2 class="location">n/a</h2>
+                </div>
+             </div>
+        <% }) %>
     </div>
 </body>
 </html>
