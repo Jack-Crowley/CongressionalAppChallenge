@@ -1,3 +1,7 @@
+body {
+    overflow: hidden;
+}
+
 .acct-info {
     width: 90vw;
     background-color: #33504e;;

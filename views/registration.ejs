@@ -14,10 +14,12 @@
             <div class="slide">
                 <h2>Step 1: Personal Info</h2>
                 <input type="text" id="name" placeholder="Name" required>
+                <input type="text" id="zipcode" placeholder="Location Zip Code" required>
                 <select id="school" required>
                     <option value="" disabled selected>Select School</option>
-                    <option value="School A">School A</option>
-                    <option value="School B">School B</option>
+                    <option value="Bergen County Academies">Bergen County Academies</option>
+                    <option value="Glen Rock High School">Glen Rock High School</option>
+                    <option value="Pascack Hills High School">Pascack Hills High School</option>
                     <!-- Add more schools as needed -->
                 </select>
             </div>
@@ -27,7 +29,42 @@
                 <input type="tel" id="phone" placeholder="Phone" required>
             </div>
             <div class="slide">
-                <h2>Step 3: Upload Picture</h2>
+                <h2>Step 3: Causes and Skills</h2>
+                <span class="causes-input"><h3>Select Causes</h3></span>
+                <span class="skills-input"><h3>Select Skills</h3></span>
+                <script>
+                    const causes = 'Animals,Arts & Culture,Children & Youth,Computers & Technology,Disabilities,Disaster Relief,Education & Literacy,Environment,Faith-Based,Health & Medicine,Homeless & Housing,Hunger,Justice & Legal,LGBTQ+,Race & Ethnicity,Seniors,Sports & Recreation,Women'.split(',')
+                    const skills = 'Advocacy, Animal Care / Handling, Arts Administration, Child Care, Community Outreach, Computer Science, Crisis Intervention, Dance, Environmental Education, Event Planning / Management, Financial Literacy, Gardening, Fundraising, Language Skills, Marketing & Communications, Math / Science Instruction, Music Arts, Nursing, Painting, Photography, Public Speaking, Reading Comprehension, Sports Coaching, Tutoring, Web Design / UX, Writing, Youth Services'.split(', ')
+                    const causesSpan = document.querySelector('span.causes-input');
+                    causesSpan.innerHTML = "";
+                    for (let i=0; i<causes.length; i++) {
+                        var x = document.createElement("INPUT");
+                        x.setAttribute('type', 'checkbox');
+                        x.setAttribute('id', causes[i])
+                        x.setAttribute('name', causes[i])
+                        var y = document.createElement("LABEL");
+                        y.setAttribute('for', causes[i])
+                        y.textContent = causes[i]
+                        causesSpan.appendChild(x);
+                        causesSpan.appendChild(y);
+                    }
+                    const skillsSpan = document.querySelector('span.skills-input');
+                    skillsSpan.innerHTML = "";
+                    for (let i=0; i<skills.length; i++) {
+                        var x = document.createElement("INPUT");
+                        x.setAttribute('type', 'checkbox');
+                        x.setAttribute('id', skills[i])
+                        x.setAttribute('name', skills[i])
+                        var y = document.createElement("LABEL");
+                        y.setAttribute('for', skills[i])
+                        y.textContent = skills[i]
+                        skillsSpan.appendChild(x);
+                        skillsSpan.appendChild(y);
+                    }
+                </script>
+            </div>
+            <div class="slide">
+                <h2>Step 4: Upload Picture</h2>
                 <input type="file" id="imageInput" accept="image/*" required>
                 <button id="scanButton">Scan</button>
                 <pre id="result"></pre>
@@ -45,6 +82,101 @@
             </div>
         </form>
     </div>
-    <script src="/scripts/registration.js"></script>
+    <!-- <script src="/scripts/registration.js"></script> -->
+    <script>
+        const form = document.getElementById('registration-form');
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.querySelector('.progress-bar');
+        //const tesseract = require('tesseract.js');
+        //import { createWorker } from 'tesseract.js';
+        // import 'tesseract.js';
+        let currentSlide = 0;
+
+        function updateProgressBar() {
+            const percent = ((currentSlide + 1) / slides.length) * 100;
+            progressBar.style.width = percent + '%';
+        }
+
+        function showSlide(slideNumber) {
+            slides.forEach((slide, index) => {
+                if (index === slideNumber) {
+                    slide.style.display = 'block';
+                } else {
+                    slide.style.display = 'none';
+                }
+            });
+            currentSlide = slideNumber;
+            updateButtons();
+            updateProgressBar();
+        }
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (currentSlide < slides.length - 1) {
+                showSlide(currentSlide + 1);
+            } else {
+                // You can handle form submission here
+                alert('Registration complete!');
+            }
+        });
+
+        // ... (previous JavaScript code) ...
+
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+
+        function moveSlide(direction) {
+            const newSlide = currentSlide + direction;
+            if (newSlide >= 0 && newSlide < slides.length) {
+                showSlide(newSlide);
+            }
+        }
+
+        function updateButtons() {
+            console.log(currentSlide)
+            if (currentSlide === 0) {
+                prevButton.setAttribute('display', 'none');
+            } else if (currentSlide === slides.length - 1) {
+                nextButton.setAttribute('display', 'none');
+            } else {
+                prevButton.setAttribute('display', 'block');
+                nextButton.setAttribute('display', 'block');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageInput = document.getElementById('imageInput');
+            const scanButton = document.getElementById('scanButton');
+            const resultElement = document.getElementById('result');
+
+            scanButton.addEventListener('click', () => {
+                const file = imageInput.files[0];
+                if (file) {
+                    (async () => {
+                        //await worker.load();
+                        //await worker.loadLanguage('eng');
+                        //await worker.initialize('eng');
+                        const worker = await Tesseract.createWorker();
+                        const { data: { text } } = await worker.recognize(file);
+                        resultElement.textContent = text;
+                        await worker.terminate();
+                    })();
+                    //const t = new Tesseract();
+                    //t.setImage(file);
+                    //t.recognize();
+                    //resultElement.textContent = t.getText();
+                }
+            });
+        });
+
+
+        prevButton.addEventListener('click', () => moveSlide(-1));
+        nextButton.addEventListener('click', () => moveSlide(1));
+
+        // Initial setup
+        updateButtons();
+        showSlide(currentSlide);
+
+    </script>
 </body>
 </html>
