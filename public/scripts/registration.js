@@ -81,7 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const t = new Tesseract();
             t.setImage(file);
             t.recognize();
-            resultElement.textContent = t.getText();
+            // resultElement.textContent = t.getText();
+            scannedText = t.getText();
+            console.log(scannedText);
         }
     });
 });
