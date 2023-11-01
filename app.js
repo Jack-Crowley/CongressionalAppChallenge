@@ -173,7 +173,73 @@ app.get("/registration", async (req, res) => {
 });
 
 app.get("/event/:eventid", async (req, res) => {
-    res.render('event')
+    let eventID = req.params.eventID;
+    let eventName;
+    let date;
+    let eventDescription;
+    let company;
+    let count;
+    let location;
+
+    // name and description
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getEventInfo"), [eventID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                eventName = results[0].eventName
+                eventDescription = results[0].eventDescription
+                date = results[0].date
+            }
+            resolve(0)
+        });
+    });
+
+    // Location
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getEventCompany"), [eventID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                company=results[0].name
+            }
+            resolve(0)
+        });
+    });
+
+    // Company
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getEventLocation"), [eventID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                location =results[0].location
+            }
+            resolve(0)
+        });
+    });
+
+    // Company
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getMemberCount"), [eventID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                count =results[0].count
+            }
+            resolve(0)
+        });
+    });
+
+    res.render('event', {name:eventName, description:eventDescription, company:company, location:location, count:count, date:date})
 });
 
 app.get("/group/:groupid", async (req, res) => {

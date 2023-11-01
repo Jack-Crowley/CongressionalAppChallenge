@@ -24,14 +24,15 @@
     </nav>
     <div class="banner">
         <div class="information">
-            <h1>Event Name</h1>
+            <h1><%= line %></h1>
             <div class="line"></div>
-            <h3>Hosted By: <span>Farmlings International</span></h3>
-            <h3>Date: March 31st, 2024</h3>
-            <h3>Time: 1:30pm - 2:20pm</h3>
-            <h3>Members Attending: 39</h3>
-            <h3>Location: 43 Form Place, Glen Rock, New Jersey</h3>
-            <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer tincidunt, purus eu ullamcorper luctus, lacus quam fringilla orci, in finibus urna neque sit amet orci. Donec varius lorem vel nisi accumsan, vitae aliquet nibh semper. Donec eros ex, finibus quis scelerisque sit amet, dictum quis urna. Praesent posuere dui eu ornare cursus. Nullam a fermentum leo. Mauris dui dui, imperdiet ut sodales et, mollis sed leo. Nulla facilisi. Morbi non turpis vitae lacus posuere porta.</h4>
+            <h3>Hosted By: <span><%= company%></span></h3>
+            <% date = new Date(event.date) %>
+            <h3>Date: <%=`${date.getMonth()+1}/${date.getDate()}/${date.getYear()+1900}`%></h3>
+            <h3>Time: <%=date.getTime()%></h3>
+            <h3>Members Attending: <%= count %></h3>
+            <h3>Location: <%= location %></h3>
+            <h4><%= description%></h4>
             <a href="#" class="register">Register</a>
         </div>
     </div>
