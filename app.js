@@ -177,7 +177,59 @@ app.get("/event/:eventid", async (req, res) => {
 });
 
 app.get("/group/:groupid", async (req, res) => {
-    res.render('group')
+    let groupID = req.params.groupid;
+    let groupName;
+    let groupEmail;
+    let members;
+    let events;
+
+    // Name and email
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getGroupFromID"), [groupID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                groupName = results[0].name
+                groupEmail = results[0].email
+
+            }
+            resolve(0)
+        });
+    });
+
+    // Members
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getMemberFromGroup"), [groupID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                members=results
+            }
+            resolve(0)
+        });
+    });
+
+    // Events
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getGroupEvents"), [groupID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                events=results;
+            }
+            resolve(0)
+        });
+    });
+
+    console.log(events)
+
+    res.render('group', {groupName:groupName, groupEmail:groupEmail, members:members, events:events})
 });
 
 app.listen(PORT, () => {
