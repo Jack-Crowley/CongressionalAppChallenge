@@ -75,6 +75,7 @@ app.get("/opportunities", async (req, res) => {
         if (error)
             res.status(500).send(error);
         else
+            console.log(results)
             res.render('opportunities', { results: results })
     });
 });
@@ -197,7 +198,7 @@ app.get("/event/:eventID", async (req, res) => {
         });
     });
 
-    // Location
+    // Company     
     await new Promise((resolve, reject) => {
         db.execute(getSQLQuery("getEventCompany"), [eventID], (error, results) => {
             if (error) {
@@ -211,7 +212,7 @@ app.get("/event/:eventID", async (req, res) => {
         });
     });
 
-    // Company
+    // Location
     await new Promise((resolve, reject) => {
         db.execute(getSQLQuery("getEventLocation"), [eventID], (error, results) => {
             if (error) {
@@ -225,7 +226,7 @@ app.get("/event/:eventID", async (req, res) => {
         });
     });
 
-    // Company
+    // Member Count
     await new Promise((resolve, reject) => {
         db.execute(getSQLQuery("getMemberCount"), [eventID], (error, results) => {
             if (error) {

@@ -48,7 +48,7 @@
         <h1 class="activities-header">Upcoming Volunteering Experiences</h1>
         <div class="events">
             <% upcomingEvents.forEach((event) => { %>
-            <div class="event">
+            <div class="event" onclick="window.location.href='/event/<%=event.eventID%>'">
                 <div class="image"><img src="/images/trash-area.png" alt=""></div>
                 <div class="info">
                     <h1><%= event.name %></h1>
@@ -75,7 +75,7 @@
                 <% pastEvents.forEach((event) => { %>
                     <tr>
                         <td><%= event.name%></td>
-                        <td>Soup Kitchen</td>
+                        <td><%= event.company%></td>
                         <td><%= event.hoursServed %></td>
                         <% date = new Date(event.date)%>
                         <td><%=`${date.getMonth()+1}/${date.getDate()}/${date.getYear()+1900}`%></td>
