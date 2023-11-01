@@ -76,7 +76,7 @@ app.get("/opportunities", async (req, res) => {
             res.status(500).send(error);
         else
             console.log(results)
-            res.render('opportunities', { results: results })
+        res.render('opportunities', { results: results })
     });
 });
 
@@ -105,7 +105,7 @@ app.get("/groups", async (req, res) => {
         if (error)
             res.status(500).send(error);
         else
-            res.render('groups', {results:results})
+            res.render('groups', { results: results })
     });
 
 });
@@ -162,7 +162,7 @@ app.get("/dashboard", async (req, res) => {
 
     console.log(upcomingEvents[0])
 
-    res.render("dashboard", {totalHours:totalHours, upcomingEvents:upcomingEvents, pastEvents:pastEvents})
+    res.render("dashboard", { totalHours: totalHours, upcomingEvents: upcomingEvents, pastEvents: pastEvents })
 });
 
 app.get("/account", async (req, res) => {
@@ -206,7 +206,7 @@ app.get("/event/:eventID", async (req, res) => {
                 res.status(500).send(error);
             }
             else {
-                company=results[0].name
+                company = results[0].name
             }
             resolve(0)
         });
@@ -220,7 +220,7 @@ app.get("/event/:eventID", async (req, res) => {
                 res.status(500).send(error);
             }
             else {
-                location =results[0].address
+                location = results[0].address
             }
             resolve(0)
         });
@@ -234,14 +234,56 @@ app.get("/event/:eventID", async (req, res) => {
                 res.status(500).send(error);
             }
             else {
-                count =results[0].count
+                count = results[0].count
             }
             resolve(0)
         });
     });
 
-    res.render('event', {name:eventName, description:eventDescription, company:company, location:location, count:count, date:date})
+    res.render('event', { name: eventName, description: eventDescription, company: company, location: location, count: count, date: date })
 });
+
+app.get("/group/join/:joincode", async (req, res) => {
+    let joinCode = req.params.joincode;
+    db.execute(getSQLQuery("findGroupFromJoinCode"), [joinCode], async (error, results) => {
+        let studentID = await getStudentID(req.oidc.user.email);
+        if (results.length == 0) {
+            res.redirect("/groups")
+            return
+        }
+        
+        let groupID = results[0].groupID
+
+        if (error) {
+            console.log(error)
+            res.status(500).send(error);
+        }
+        else {
+            db.execute(getSQLQuery("checkIfGroup"), [groupID, studentID], (error, results) => {
+                if (error) {
+                    console.log(error)
+                    res.status(500).send(error);
+                }
+                else {
+                    if (results.length == 0) {
+                        db.execute(getSQLQuery("addToGroup"), [groupID, studentID], (error, results) => {
+                            if (error) {
+                                console.log(error)
+                                res.status(500).send(error);
+                            }
+                            else {
+                                res.redirect("/groups")
+                            }
+                        });
+                    }
+                    else {
+                        res.redirect("/groups")
+                    }
+                }
+            });
+        }
+    });
+})
 
 app.get("/group/:groupid", async (req, res) => {
     let studentID = await getStudentID(req.oidc.user.email)
@@ -276,7 +318,7 @@ app.get("/group/:groupid", async (req, res) => {
                 res.status(500).send(error);
             }
             else {
-                members=results
+                members = results
             }
             resolve(0)
         });
@@ -290,7 +332,7 @@ app.get("/group/:groupid", async (req, res) => {
                 res.status(500).send(error);
             }
             else {
-                events=results;
+                events = results;
             }
             resolve(0)
         });
@@ -304,7 +346,7 @@ app.get("/group/:groupid", async (req, res) => {
                 res.status(500).send(error);
             }
             else {
-                inGroup=results.length == 1;
+                inGroup = results.length == 1;
             }
             resolve(0)
         });
@@ -312,7 +354,7 @@ app.get("/group/:groupid", async (req, res) => {
 
     console.log(events)
 
-    res.render('group', {groupName:groupName, groupEmail:groupEmail, members:members, events:events, inGroup:inGroup})
+    res.render('group', { groupName: groupName, groupEmail: groupEmail, members: members, events: events, inGroup: inGroup })
 });
 
 app.listen(PORT, () => {

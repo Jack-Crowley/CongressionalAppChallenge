@@ -52,25 +52,28 @@
             </div>
         </div>
         <div class="events activeSection">
-            <% events.forEach((event)=> { %>
-                <div class="event">
-                    <div class="date">
-                        <h1 class="month">
-                            <%= new Date(event.date).toLocaleString('en-US', { month: 'short' }).toUpperCase() %>
-                        </h1>
-                        <h1 class="day">
-                            <%= new Date(event.date).getDate() %>
-                        </h1>
+            <% if (events.length > 1) { %>
+                <% events.forEach((event)=> { %>
+                    <div class="event">
+                        <div class="date">
+                            <h1 class="month">
+                                <%= new Date(event.date).toLocaleString('en-US', { month: 'short' }).toUpperCase() %>
+                            </h1>
+                            <h1 class="day">
+                                <%= new Date(event.date).getDate() %>
+                            </h1>
+                        </div>
+                        <div class="otherInfo">
+                            <h1 class="name">
+                                <%= event.name %>
+                            </h1>
+                            <h2 class="company">n/a</h2>
+                            <h2 class="location">n/a</h2>
+                        </div>
                     </div>
-                    <div class="otherInfo">
-                        <h1 class="name">
-                            <%= event.name %>
-                        </h1>
-                        <h2 class="company">n/a</h2>
-                        <h2 class="location">n/a</h2>
-                    </div>
-                </div>
-                <% }) %>
+                <% })} else { %>
+                    <h1 class="noEvents">No Upcoming Events</h1>
+                <% } %>
         </div>
         <div class="contact">
             <h1>Email: <%= groupEmail%></h1>

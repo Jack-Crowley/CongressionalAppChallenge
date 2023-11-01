@@ -116,7 +116,7 @@
     font-weight: lighter;
 }
 
-.contact h1 {
+.contact h1, .noEvents {
     padding-left: 200px;
 }
 
