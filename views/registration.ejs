@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +9,15 @@
     <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
     <title>Registration System</title>
 </head>
+
 <body>
     <div class="registration-container">
         <form id="registration-form" autocomplete="off">
             <div class="slide">
                 <h2>Step 1: Personal Info</h2>
-                <input type="text" id="name" placeholder="Name" required>
-                <input type="text" id="zipcode" placeholder="Location Zip Code" required>
-                <select id="school" required>
+                <input type="text" id="name" placeholder="Name" required class="name">
+                <input type="text" id="zipcode" placeholder="Location Zip Code" required class="zipcode">
+                <select name="school" id="school" required class="school">
                     <option value="" disabled selected>Select School</option>
                     <option value="Bergen County Academies">Bergen County Academies</option>
                     <option value="Glen Rock High School">Glen Rock High School</option>
@@ -23,12 +25,12 @@
                     <option value="Stewarts Creek High School">Stewarts Creek High School</option>
                     <!-- Add more schools as needed -->
                 </select>
-                <input type="text" id="gradyear" placeholder="Graduation Year (yyyy)" required>
+                <input type="text" id="gradyear" placeholder="Graduation Year (yyyy)" required class="gradYear">
             </div>
             <div class="slide">
                 <h2>Step 2: Contact Info</h2>
-                <input type="email" id="email" placeholder="Email" required>
-                <input type="tel" id="phone" placeholder="Phone" required>
+                <input type="email" id="email" placeholder="Email" required class="email">
+                <input type="tel" id="phone" placeholder="Phone" required class="phone">
             </div>
             <!-- <div class="slide">
                 <h2>Step 3: Causes and Skills</h2>
@@ -68,14 +70,15 @@
             <div class="slide">
                 <h2>Step 3: Upload Student ID Picture</h2>
                 <input type="file" id="imageInput" accept="image/*" required onchange="loadFile(event)">
-                <span style="width: 60vw; display: flex; align-items: center; align-content: center;"><img id="output" style="width: 40%;"/></span>
+                <span style="width: 60vw; display: flex; align-items: center; align-content: center;"><img id="output"
+                        style="width: 40%;" /></span>
                 <script>
-                    var loadFile = function(event) {
-                      var output = document.getElementById('output');
-                      output.src = URL.createObjectURL(event.target.files[0]);
-                      output.onload = function() {
-                        URL.revokeObjectURL(output.src) // free memory
-                      }
+                    var loadFile = function (event) {
+                        var output = document.getElementById('output');
+                        output.src = URL.createObjectURL(event.target.files[0]);
+                        output.onload = function () {
+                            URL.revokeObjectURL(output.src) // free memory
+                        }
                     };
                 </script>
                 <button id="scanButton">Scan</button>
@@ -84,7 +87,7 @@
             </div>
             <div class="slide">
                 <h2>Registration Complete</h2>
-                <button type="submit">Submit</button>
+                <button type="submit" class="submit">Submit</button>
             </div>
             <div class="progress-bar"></div>
             <!-- ... (previous HTML code) ... -->
@@ -123,12 +126,35 @@
         }
 
         form.addEventListener('submit', (e) => {
-            e.preventDefault();
+            e.preventDefault()
             if (currentSlide < slides.length - 1) {
                 showSlide(currentSlide + 1);
             } else {
-                // You can handle form submission here
-                alert('Registration complete!');
+                let data = {
+                    name: document.querySelector(".name").value,
+                    email: document.querySelector(".email").value,
+                }
+
+                let options = {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                };
+
+                fetch('/registration', options)
+                    .then(response => window.location.href="/")
+                    .then(data => {
+                        window.location.href="/";
+                        console.log(data)
+                    })
+                    .catch(error => {
+                        window.location.href="/";
+                        console.error('Error:', error);
+                    });
+
+                console.log(options)
             }
         });
 
@@ -192,4 +218,5 @@
 
     </script>
 </body>
+
 </html>

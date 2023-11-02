@@ -173,6 +173,21 @@ app.get("/registration", async (req, res) => {
     res.render('registration')
 });
 
+app.post("/registration", async (req, res) => {
+    let name = req.body.name.split(" ");
+    console.log(req.body.name)
+    console.log(name)
+    db.execute(getSQLQuery("addStudent"), [req.body.email, 1, name[0], name[1], 2025, 2], (error, results) => {
+        if (error) {
+            console.log(error)
+            res.status(500).send(error);
+        }
+        else {
+            res.send({data:'works'})
+        }
+    });
+});
+
 app.get("/event/:eventID", async (req, res) => {
     let eventID = req.params.eventID;
     let studentID = await getStudentID(req.oidc.user.email)

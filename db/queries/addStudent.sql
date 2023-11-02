@@ -1,4 +1,4 @@
 INSERT INTO Student
-    (email, schoolID, firstName, lastName, dob, gradYear, interests, phoneNumber, accountID) 
+    (email, schoolID, firstName, lastName, gradYear, accountID) 
 VALUES 
-    (?,?,?,?,?,?,?,?);
+    (?,?,?,?,?,?);
