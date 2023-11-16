@@ -173,6 +173,10 @@ app.get("/registration", async (req, res) => {
     res.render('registration')
 });
 
+app.get("/company", async (req, res) => {
+    res.render('company')
+});
+
 app.post("/registration", async (req, res) => {
     let name = req.body.name.split(" ");
     console.log(req.body.name)

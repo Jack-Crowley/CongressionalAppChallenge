@@ -29,3 +29,37 @@ nav .name a {
     color: #3c3c3c;
     background-color: #e7e7e7;
 }
+
+@media screen and (max-width: 768px) {
+    .subheadings {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 60px; /* Adjust as needed */
+        left: 0;
+        background-color: #f0f0f0; /* Set background color as needed */
+        width: 100%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 1;
+    }
+
+    .subheadings a {
+        display: block;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .navToggle {
+        display: block;
+        cursor: pointer;
+    }
+
+    .navToggle span {
+        display: block;
+        height: 3px;
+        width: 25px;
+        background-color: #333;
+        margin: 5px 0;
+        transition: 0.4s;
+    }
+}
