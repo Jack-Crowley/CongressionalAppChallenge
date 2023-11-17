@@ -74,9 +74,23 @@ app.get("/opportunities", async (req, res) => {
     db.execute(getSQLQuery("getAllUpcomingEvents"), (error, results) => {
         if (error)
             res.status(500).send(error);
-        else
-            console.log(results)
         res.render('opportunities', { results: results })
+    });
+});
+
+app.post("/opportunities", async (req, res) => {
+    console.log(req.body)
+
+    let date = (req.date == null) ? '' : new Date(`20${req.date.replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$3-$1-$2')}`);
+    let zipcode = (req.location = null) ? '' : req.location
+    let word = `%`+req.keyword+`%`
+
+    db.execute(getSQLQuery("searchOpportunity"), [word,word,word,date,date,zipcode,zipcode], (error, results) => {
+        if (error) {
+            console.log(error)
+            res.status(500).send(error); }
+        else
+            res.send(results)
     });
 });
 
@@ -138,7 +152,6 @@ app.get("/dashboard", async (req, res) => {
                 res.status(500).send(error);
             }
             else {
-                console.log(results)
                 upcomingEvents = results
             }
             resolve(0)

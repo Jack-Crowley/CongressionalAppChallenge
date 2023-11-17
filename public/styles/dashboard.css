@@ -123,6 +123,7 @@ tr {
 
 .upcoming {
     width: 100%;
+    box-sizing: border-box;
     background-color: #33504e;
 }
 
