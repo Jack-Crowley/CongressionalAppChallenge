@@ -85,3 +85,13 @@
     padding: 10px 0;
     border-radius: 20px;
 }
+
+@media screen and (max-width: 768px) {
+    .group {
+        display: block;
+    }
+
+    .banner img {
+        border-radius: 20px 20px 0 0;
+    }
+}
