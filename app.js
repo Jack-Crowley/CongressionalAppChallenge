@@ -157,7 +157,6 @@ app.post("/opportunities/:eventID", async (req, res) => {
 
 async function accountRegisterIndex(req, res, next) {
     if (!req.oidc.isAuthenticated()) {
-        console.log('lol')
         next();
     }
     else {
@@ -422,6 +421,38 @@ app.get("/event/register/:eventID", accountRegister, async (req, res) => {
         }
         else {
             res.redirect("/event/"+eventID)
+        }
+    });
+});
+
+app.get("/certificate/:id", accountRegister, async (req, res) => {
+    let id = req.params.id;
+    let studentID = await getStudentID(req.oidc.user.email);
+
+    db.execute(getSQLQuery("getCertificate"), [id], (error, results) => {
+        if (error) {
+            console.log(error)
+            res.status(500).send(error);
+        }
+        else {
+            if (results.length == 0) {
+                res.send({})
+                return
+            }
+            db.execute(getSQLQuery("getSchoolPermission"), [results[0].id], (error, schoolBoolean) => {
+                if (error) {
+                    console.log(error)
+                    res.status(500).send(error);
+                }
+                else {
+                    if (schoolBoolean[0].school) {
+                        res.send(results)
+                    }
+                    else {
+                        res.send({"error":"no permission"})
+                    }
+                }
+            });
         }
     });
 });
