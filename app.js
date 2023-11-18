@@ -82,8 +82,16 @@ app.post("/opportunities", async (req, res) => {
     console.log(req.body)
     console.log(req.body.keyword)
 
-    let date = (req.body.date == '') ? '' : new Date(`20${req.body.date.replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$3-$1-$2')}`);
-    date = date.toISOString().split('T')[0]
+    let date = req.body.date
+    if (date != '') {
+        console.log("VALID DATE")
+        date = new Date(`20${date.replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$3-$1-$2')}`)
+        date = date.toISOString().split('T')[0]
+    }
+    else {
+        date = ''
+    }
+
     let zipcode = req.body.zipcode
     let word = `%`+req.body.keyword+`%`
 
