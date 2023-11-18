@@ -1,4 +1,4 @@
 INSERT INTO Account
-    (email, schoolID) 
+    (email, school) 
 VALUES 
     (?,?);
