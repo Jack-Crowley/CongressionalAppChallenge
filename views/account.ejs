@@ -27,7 +27,7 @@
         <img src="/images/pfp-default.jpg" alt="">
         <div class="details-container">
             <div class="details-inner">
-                <h1 class="acct-name" style="font-weight: 100;">Welcome, <span class="name-of-person" style="font-weight: 900;"><span class="user-first-name">John</span> <span class="user-last-name">Smith</span></span>!</h1>
+                <h1 class="acct-name" style="font-weight: 100;">Welcome, <span class="name-of-person" style="font-weight: 900;"><span class="user-first-name"><%= results.firstName %></span> <span class="user-last-name"><%= results.lastName %></span></span>!</h1>
                 <div class="side-info">
                     <div class="side-info-l" style="padding-right: 30px;">
                         <span class="location">
@@ -40,11 +40,11 @@
                         </span>
                         <span class="email">
                             <h2>Email Address</h2>
-                            <p>jonsmi@bergen.org</p>
+                            <p><%= results.email %></p>
                         </span>
                         <span class="phone">
                             <h2>Phone #</h2>
-                            <p>(123)-456-7890</p>
+                            <p><%= results.phoneNumber %></p>
                         </span>
                     </div>
                     <div class="side-info-r" style="padding-left: 30px;">

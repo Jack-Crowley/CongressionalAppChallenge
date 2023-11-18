@@ -252,7 +252,12 @@ app.get("/dashboard", accountRegister, async (req, res) => {
 });
 
 app.get("/account", accountRegister, async (req, res) => {
-    res.render('account')
+    db.execute(getSQLQuery("getStudentInfo"), (error, results) => {
+        if (error)
+            res.status(500).send(error);
+        else
+            res.render('account', { results: results })
+    });
 });
 
 app.get("/registration", async (req, res) => {
