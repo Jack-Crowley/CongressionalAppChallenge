@@ -9,9 +9,9 @@ const config = {
     authRequired: false,
     auth0Logout: true,
     secret: process.env.AUTH_SECRET,
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://localhost:80',
     clientID: 'xFcg2M5WA23acnOfo8OvdWSA6BaED0GH',
-    issuerBaseURL: 'https://dev-vs0v5722j8irc2o0.us.auth0.com'
+    issuerBaseURL: 'https://dev-vs0v5722j8irc2o0.us.auth0.com',
 };
 
 
