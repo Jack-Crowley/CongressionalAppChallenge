@@ -267,8 +267,30 @@ app.post("/registration", async (req, res) => {
     let name = req.body.name.split(" ");
     console.log(req.body.name)
     console.log(name)
+    let accountID;
 
-    db.execute(getSQLQuery("addStudent"), [req.body.email, 1, req.body.name.split(" ")[0], req.body.name.split(" ")[1], req.body.gradYear, 2, req.body.phone], (error, results) => {
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("addAccount"), [req.body.email, 1], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                db.execute(getSQLQuery("findAccountFromEmail"), [req.body.email], (error, results) => {
+                    if (error) {
+                        console.log(error)
+                        res.status(500).send(error);
+                    }
+                    else {
+                        accountID = results[0].accountID;
+                    }
+                    resolve(0)
+                });
+            }
+        });
+    });
+
+    db.execute(getSQLQuery("addStudent"), [req.body.email, 1, req.body.name.split(" ")[0], req.body.name.split(" ")[1], req.body.gradYear, accountID, req.body.phone], (error, results) => {
         if (error) {
             console.log(error)
             res.status(500).send(error);
