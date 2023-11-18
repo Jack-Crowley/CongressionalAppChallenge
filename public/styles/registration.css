@@ -25,7 +25,7 @@ body {
 }
 
 .slide {
-    display: none;
+    /* display: none; */
     /* border: 5px solid white; */
     width: 60vw;
     margin: 0;
