@@ -16,6 +16,9 @@ const config = {
 
 
 const app = express();
+
+app.set('trust proxy', true)
+
 const PORT = 80;
 
 app.use(auth(config));
