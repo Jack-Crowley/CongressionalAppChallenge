@@ -50,7 +50,10 @@ async function getStudentID(email) {
 
 async function accountRegister(req, res, next) {
     if (!req.oidc.isAuthenticated()) {
-        req.redirect("/register")
+        req.redirect("/registration")
+        // console.log('here!')
+        // req.redirect('/registration')
+        // console.log('here! 2')
     }
     else {
         await new Promise((resolve, reject) => {
@@ -65,7 +68,7 @@ async function accountRegister(req, res, next) {
                     }
                     else {
                         console.log("Test")
-                        res.redirect("/register")
+                        res.redirect("/registration")
                     }
                 }
             });
@@ -152,8 +155,35 @@ app.post("/opportunities/:eventID", async (req, res) => {
     });
 })
 
-app.get("/", async (req, res) => {
+async function accountRegisterIndex(req, res, next) {
+    if (!req.oidc.isAuthenticated()) {
+        console.log('lol')
+        next();
+    }
+    else {
+        await new Promise((resolve, reject) => {
+            db.execute(getSQLQuery("findIfNewUser"), [req.oidc.user.email], (error, results) => {
+                console.log("Test1")
+                if (error)
+                    res.status(500).send(error);
+                else {
+                    if (results.length >= 1) {
+                        console.log("Test")
+                        next()
+                    }
+                    else {
+                        console.log("Test")
+                        res.redirect("/registration")
+                    }
+                }
+            });
+        });
+    }
+}
+
+app.get("/", accountRegisterIndex, async (req, res) => {
     res.render(req.oidc.isAuthenticated() ? 'index' : 'index-loggedOut');
+    // res.render('index-loggedOut');
 });
 
 app.get("/groups", accountRegister, async (req, res) => {
@@ -238,13 +268,15 @@ app.post("/registration", async (req, res) => {
     let name = req.body.name.split(" ");
     console.log(req.body.name)
     console.log(name)
-    db.execute(getSQLQuery("addStudent"), [req.body.email, 1, name[0], name[1], 2025, 2], (error, results) => {
+
+    db.execute(getSQLQuery("addStudent"), [req.body.email, 1, req.body.name.split(" ")[0], req.body.name.split(" ")[1], req.body.gradYear, 2], (error, results) => {
         if (error) {
             console.log(error)
             res.status(500).send(error);
         }
         else {
             res.send({data:'works'})
+            res.redirect("/")
         }
     });
 });
