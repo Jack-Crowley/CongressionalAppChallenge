@@ -73,7 +73,7 @@ async function accountRegister(req, res, next) {
     }
 }
 
-app.get("/opportunities", async (req, res) => {
+app.get("/opportunities", accountRegister, async (req, res) => {
     let upcomingEvents;
     let pastEvents;
 
@@ -156,7 +156,7 @@ app.get("/", async (req, res) => {
     res.render(req.oidc.isAuthenticated() ? 'index' : 'index-loggedOut');
 });
 
-app.get("/groups", async (req, res) => {
+app.get("/groups", accountRegister, async (req, res) => {
     let studentID = await getStudentID(req.oidc.user.email)
 
     db.execute(getSQLQuery("getStudentGroups"), [studentID], (error, results) => {
@@ -168,7 +168,7 @@ app.get("/groups", async (req, res) => {
 
 });
 
-app.get("/dashboard", async (req, res) => {
+app.get("/dashboard", accountRegister, async (req, res) => {
     let totalHours = 0
     let pastEvents;
     let upcomingEvents;
@@ -222,15 +222,15 @@ app.get("/dashboard", async (req, res) => {
     res.render("dashboard", { totalHours: totalHours, upcomingEvents: upcomingEvents, pastEvents: pastEvents })
 });
 
-app.get("/account", async (req, res) => {
+app.get("/account", accountRegister, async (req, res) => {
     res.render('account')
 });
 
-app.get("/registration", async (req, res) => {
+app.get("/registration", accountRegister, async (req, res) => {
     res.render('registration')
 });
 
-app.get("/company", async (req, res) => {
+app.get("/company", accountRegister, async (req, res) => {
     res.render('company')
 });
 
@@ -249,7 +249,7 @@ app.post("/registration", async (req, res) => {
     });
 });
 
-app.get("/event/:eventID", async (req, res) => {
+app.get("/event/:eventID", accountRegister, async (req, res) => {
     let eventID = req.params.eventID;
     let studentID = await getStudentID(req.oidc.user.email)
     let eventName;
@@ -335,7 +335,7 @@ app.get("/event/:eventID", async (req, res) => {
     res.render('event', { id: eventID, name: eventName, description: eventDescription, company: company, location: location, count: count, date: date, inEvent:inEvent })
 });
 
-app.get("/group/join/:joincode", async (req, res) => {
+app.get("/group/join/:joincode", accountRegister, async (req, res) => {
     let joinCode = req.params.joincode;
     db.execute(getSQLQuery("findGroupFromJoinCode"), [joinCode], async (error, results) => {
         let studentID = await getStudentID(req.oidc.user.email);
@@ -377,7 +377,7 @@ app.get("/group/join/:joincode", async (req, res) => {
     });
 })
 
-app.get("/event/register/:eventID", async (req, res) => {
+app.get("/event/register/:eventID", accountRegister, async (req, res) => {
     let eventID = req.params.eventID;
     let studentID = await getStudentID(req.oidc.user.email);
 
@@ -392,7 +392,7 @@ app.get("/event/register/:eventID", async (req, res) => {
     });
 });
 
-app.get("/group/:groupid", async (req, res) => {
+app.get("/group/:groupid", accountRegister, async (req, res) => {
     let studentID = await getStudentID(req.oidc.user.email)
     let groupID = req.params.groupid;
     let groupName;
