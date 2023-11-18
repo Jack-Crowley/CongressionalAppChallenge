@@ -9,14 +9,17 @@ const config = {
     authRequired: false,
     auth0Logout: true,
     secret: process.env.AUTH_SECRET,
-    baseURL: 'http://localhost:3000',
+    baseURL: 'http://35.230.162.97:80',
     clientID: 'xFcg2M5WA23acnOfo8OvdWSA6BaED0GH',
-    issuerBaseURL: 'https://dev-vs0v5722j8irc2o0.us.auth0.com'
+    issuerBaseURL: 'https://dev-vs0v5722j8irc2o0.us.auth0.com',
 };
 
 
 const app = express();
-const PORT = 3000;
+
+app.set('trust proxy', true)
+
+const PORT = 80;
 
 app.use(auth(config));
 
@@ -47,7 +50,10 @@ async function getStudentID(email) {
 
 async function accountRegister(req, res, next) {
     if (!req.oidc.isAuthenticated()) {
-        req.redirect("/register")
+        req.redirect("/registration")
+        // console.log('here!')
+        // req.redirect('/registration')
+        // console.log('here! 2')
     }
     else {
         await new Promise((resolve, reject) => {
@@ -62,7 +68,7 @@ async function accountRegister(req, res, next) {
                     }
                     else {
                         console.log("Test")
-                        res.redirect("/register")
+                        res.redirect("/registration")
                     }
                 }
             });
@@ -70,20 +76,61 @@ async function accountRegister(req, res, next) {
     }
 }
 
-app.get("/opportunities", async (req, res) => {
+app.get("/opportunities", accountRegister, async (req, res) => {
+    let upcomingEvents;
+    let pastEvents;
+
+    let studentID = await getStudentID(req.oidc.user.email)
+
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getUpcomingForAI"), [studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                upcomingEvents = results;
+            }
+            resolve(0)
+        });
+    });
+
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getPastForAI"), (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                pastEvents = results
+            }
+            resolve(0)
+        });
+    });
+
     db.execute(getSQLQuery("getAllUpcomingEvents"), (error, results) => {
         if (error)
             res.status(500).send(error);
-        res.render('opportunities', { results: results })
+        res.render('opportunities', { results: results, pastEvents:pastEvents, upcomingEvents:upcomingEvents })
     });
 });
 
-app.post("/opportunities", async (req, res) => {
-    console.log(req.body)
+app.get("/ai", async (req, res) => {
+    res.render("ai")
+});
 
-    let date = (req.date == null) ? '' : new Date(`20${req.date.replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$3-$1-$2')}`);
-    let zipcode = (req.location = null) ? '' : req.location
-    let word = `%`+req.keyword+`%`
+app.post("/opportunities", async (req, res) => {
+    let date = req.body.date
+    if (date != '') {
+        date = new Date(`20${date.replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$3-$1-$2')}`)
+        date = date.toISOString().split('T')[0]
+    }
+    else {
+        date = ''
+    }
+
+    let zipcode = req.body.zipcode
+    let word = `%`+req.body.keyword+`%`
 
     db.execute(getSQLQuery("searchOpportunity"), [word,word,word,date,date,zipcode,zipcode], (error, results) => {
         if (error) {
@@ -108,11 +155,37 @@ app.post("/opportunities/:eventID", async (req, res) => {
     });
 })
 
-app.get("/", async (req, res) => {
+async function accountRegisterIndex(req, res, next) {
+    if (!req.oidc.isAuthenticated()) {
+        next();
+    }
+    else {
+        await new Promise((resolve, reject) => {
+            db.execute(getSQLQuery("findIfNewUser"), [req.oidc.user.email], (error, results) => {
+                console.log("Test1")
+                if (error)
+                    res.status(500).send(error);
+                else {
+                    if (results.length >= 1) {
+                        console.log("Test")
+                        next()
+                    }
+                    else {
+                        console.log("Test")
+                        res.redirect("/registration")
+                    }
+                }
+            });
+        });
+    }
+}
+
+app.get("/", accountRegisterIndex, async (req, res) => {
     res.render(req.oidc.isAuthenticated() ? 'index' : 'index-loggedOut');
+    // res.render('index-loggedOut');
 });
 
-app.get("/groups", async (req, res) => {
+app.get("/groups", accountRegister, async (req, res) => {
     let studentID = await getStudentID(req.oidc.user.email)
 
     db.execute(getSQLQuery("getStudentGroups"), [studentID], (error, results) => {
@@ -124,7 +197,7 @@ app.get("/groups", async (req, res) => {
 
 });
 
-app.get("/dashboard", async (req, res) => {
+app.get("/dashboard", accountRegister, async (req, res) => {
     let totalHours = 0
     let pastEvents;
     let upcomingEvents;
@@ -178,7 +251,7 @@ app.get("/dashboard", async (req, res) => {
     res.render("dashboard", { totalHours: totalHours, upcomingEvents: upcomingEvents, pastEvents: pastEvents })
 });
 
-app.get("/account", async (req, res) => {
+app.get("/account", accountRegister, async (req, res) => {
     res.render('account')
 });
 
@@ -186,7 +259,7 @@ app.get("/registration", async (req, res) => {
     res.render('registration')
 });
 
-app.get("/company", async (req, res) => {
+app.get("/company", accountRegister, async (req, res) => {
     res.render('company')
 });
 
@@ -194,18 +267,20 @@ app.post("/registration", async (req, res) => {
     let name = req.body.name.split(" ");
     console.log(req.body.name)
     console.log(name)
-    db.execute(getSQLQuery("addStudent"), [req.body.email, 1, name[0], name[1], 2025, 2], (error, results) => {
+
+    db.execute(getSQLQuery("addStudent"), [req.body.email, 1, req.body.name.split(" ")[0], req.body.name.split(" ")[1], req.body.gradYear, 2], (error, results) => {
         if (error) {
             console.log(error)
             res.status(500).send(error);
         }
         else {
             res.send({data:'works'})
+            res.redirect("/")
         }
     });
 });
 
-app.get("/event/:eventID", async (req, res) => {
+app.get("/event/:eventID", accountRegister, async (req, res) => {
     let eventID = req.params.eventID;
     let studentID = await getStudentID(req.oidc.user.email)
     let eventName;
@@ -213,6 +288,7 @@ app.get("/event/:eventID", async (req, res) => {
     let eventDescription;
     let company;
     let count;
+    let id;
     let location;
     let inEvent;
 
@@ -227,6 +303,7 @@ app.get("/event/:eventID", async (req, res) => {
                 eventName = results[0].name
                 eventDescription = results[0].description
                 date = results[0].date
+                id = results[0].ID
             }
             resolve(0)
         });
@@ -291,7 +368,7 @@ app.get("/event/:eventID", async (req, res) => {
     res.render('event', { id: eventID, name: eventName, description: eventDescription, company: company, location: location, count: count, date: date, inEvent:inEvent })
 });
 
-app.get("/group/join/:joincode", async (req, res) => {
+app.get("/group/join/:joincode", accountRegister, async (req, res) => {
     let joinCode = req.params.joincode;
     db.execute(getSQLQuery("findGroupFromJoinCode"), [joinCode], async (error, results) => {
         let studentID = await getStudentID(req.oidc.user.email);
@@ -333,7 +410,7 @@ app.get("/group/join/:joincode", async (req, res) => {
     });
 })
 
-app.get("/event/register/:eventID", async (req, res) => {
+app.get("/event/register/:eventID", accountRegister, async (req, res) => {
     let eventID = req.params.eventID;
     let studentID = await getStudentID(req.oidc.user.email);
 
@@ -348,7 +425,39 @@ app.get("/event/register/:eventID", async (req, res) => {
     });
 });
 
-app.get("/group/:groupid", async (req, res) => {
+app.get("/certificate/:id", accountRegister, async (req, res) => {
+    let id = req.params.id;
+    let studentID = await getStudentID(req.oidc.user.email);
+
+    db.execute(getSQLQuery("getCertificate"), [id], (error, results) => {
+        if (error) {
+            console.log(error)
+            res.status(500).send(error);
+        }
+        else {
+            if (results.length == 0) {
+                res.send({})
+                return
+            }
+            db.execute(getSQLQuery("getSchoolPermission"), [results[0].id], (error, schoolBoolean) => {
+                if (error) {
+                    console.log(error)
+                    res.status(500).send(error);
+                }
+                else {
+                    if (schoolBoolean[0].school) {
+                        res.send(results)
+                    }
+                    else {
+                        res.send({"error":"no permission"})
+                    }
+                }
+            });
+        }
+    });
+});
+
+app.get("/group/:groupid", accountRegister, async (req, res) => {
     let studentID = await getStudentID(req.oidc.user.email)
     let groupID = req.params.groupid;
     let groupName;
@@ -356,6 +465,7 @@ app.get("/group/:groupid", async (req, res) => {
     let members;
     let events;
     let inGroup;
+    console.log(groupID)
 
     // Name and email
     await new Promise((resolve, reject) => {
@@ -365,6 +475,10 @@ app.get("/group/:groupid", async (req, res) => {
                 res.status(500).send(error);
             }
             else {
+                if (results.length == 0) {
+                    res.redirect("/groups")
+                    return
+                }
                 groupName = results[0].name
                 groupEmail = results[0].email
 
@@ -386,6 +500,7 @@ app.get("/group/:groupid", async (req, res) => {
             resolve(0)
         });
     });
+
 
     // Events
     await new Promise((resolve, reject) => {
@@ -417,7 +532,7 @@ app.get("/group/:groupid", async (req, res) => {
 
     console.log(events)
 
-    res.render('group', { groupName: groupName, groupEmail: groupEmail, members: members, events: events, inGroup: inGroup })
+    res.render('group', { groupID: groupID,groupName: groupName, groupEmail: groupEmail, members: members, events: events, inGroup: inGroup })
 });
 
 app.listen(PORT, () => {

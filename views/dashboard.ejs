@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +11,18 @@
     <link rel="stylesheet" href="/styles/dashboard.css">
     <link rel="stylesheet" href="/styles/nav.css">
 </head>
+
 <body>
     <nav>
         <div class="name">
-            <a href=""><h1>CommuniTeens</h1></a>
+            <a href="">
+                <h1>CommuniTeens</h1>
+            </a>
+        </div>
+        <div class="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
         <div class="subheadings">
             <a href="/dashboard">Dashboard</a>
@@ -23,7 +32,9 @@
         </div>
     </nav>
     <div class="goals">
-        <h1 class="hours-num"><span class="specific-hours"><%=totalHours%></span> Hours Served</h1>
+        <h1 class="hours-num"><span class="specific-hours">
+                <%=totalHours%>
+            </span> Hours Served</h1>
         <div class="goal">
             <div class="goal-title">
                 <h2 class="goal-header">Graduation <span>|</span> 06/23/25</h2>
@@ -33,7 +44,9 @@
                     <div class="progress-bar-overlay"></div>
                     <div class="progress-bar"></div>
                 </div>
-                <h2 class="subtitle" style="margin-left: 13%; text-align: left;"><span class="specific-hours"><%=totalHours%></span>/<span class="total-hours">40</span> Hours</h2>
+                <h2 class="subtitle" style="margin-left: 13%; text-align: left;"><span class="specific-hours">
+                        <%=totalHours%>
+                    </span>/<span class="total-hours">40</span> Hours</h2>
                 <script>
                     let hoursReceived = parseInt(document.querySelector('.specific-hours').textContent, 10)
                     let hoursTotal = parseInt(document.querySelector('.total-hours').textContent, 10)
@@ -47,16 +60,20 @@
     <div class="upcoming">
         <h1 class="activities-header">Upcoming Volunteering Experiences</h1>
         <div class="events">
-            <% upcomingEvents.forEach((event) => { %>
-            <div class="event" onclick="window.location.href='/event/<%=event.eventID%>'">
-                <div class="image"><img src="/images/trash-area.png" alt=""></div>
-                <div class="info">
-                    <h1><%= event.name %></h1>
-                    <% date = new Date(event.date) %>
-                    <h3><%=`${date.getMonth()+1}/${date.getDate()}/${date.getYear()+1900}`%></h3>
+            <% upcomingEvents.forEach((event)=> { %>
+                <div class="event" onclick="window.location.href='/event/<%=event.eventID%>'">
+                    <div class="image"><img src="/images/service<%=event.eventID%>.jpg" alt=""></div>
+                    <div class="info">
+                        <h1>
+                            <%= event.name %>
+                        </h1>
+                        <% date=new Date(event.date) %>
+                            <h3>
+                                <%=`${date.getMonth()+1} /${date.getDate()}/${date.getYear()+1900}`%>
+                            </h3>
+                    </div>
                 </div>
-            </div>
-            <% }) %>
+                <% }) %>
         </div>
     </div>
     <div class="activities">
@@ -72,18 +89,42 @@
                 </tr>
             </thead>
             <tbody>
-                <% pastEvents.forEach((event) => { %>
+                <% pastEvents.forEach((event)=> { %>
                     <tr>
-                        <td><%= event.name%></td>
-                        <td><%= event.company%></td>
-                        <td><%= event.hoursServed %></td>
-                        <% date = new Date(event.date)%>
-                        <td><%=`${date.getMonth()+1}/${date.getDate()}/${date.getYear()+1900}`%></td>
-                        <td class="certificate"><a href="/certificate/<%=event.id%>">Copy Link</a></td>
+                        <td>
+                            <%= event.name%>
+                        </td>
+                        <td>
+                            <%= event.company%>
+                        </td>
+                        <td>
+                            <%= event.hoursServed %>
+                        </td>
+                        <% date=new Date(event.date)%>
+                            <td>
+                                <%=`${date.getMonth()+1} /${date.getDate()}/${date.getYear()+1900}`%>
+                            </td>
+                            <td class="certificate"><a href="#">Copy Link</a></td>
                     </tr>
-                <% }) %>
+                    <% }) %>
             </tbody>
         </table>
     </div>
+
+    <script>
+        const tableEl = document.querySelector("table");
+        const thEls = tableEl.querySelectorAll('thead tr th');
+        console.log(thEls)
+        const tdLabels = Array.from(thEls).map(el => el.innerText);
+        tableEl.querySelectorAll('tbody tr').forEach(tr => {
+            Array.from(tr.children).forEach(
+                (td, ndx) => td.setAttribute('label', tdLabels[ndx])
+            );
+        });
+    </script>
+
+    <script src="/scripts/nav.js"></script>
+
 </body>
+
 </html>

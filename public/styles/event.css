@@ -45,10 +45,6 @@ body {
     background-color: #85e480;
 }
 
-nav {
-    background-color: rgb(224, 226, 219);
-}
-
 nav .subheadings a {
     color: #535555 !important;
 }
@@ -66,4 +62,34 @@ nav .subheadings a {
     font-size: 2rem;
     border-radius: 20px;
     margin-top: 100px;
+}
+
+.banner img {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .banner {
+        background-image:none !important;
+        padding: 0;
+        background-color: rgb(63, 80, 55);
+    }
+
+    .banner img {
+        display: block;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .information {
+        padding: 10% 10% 10% 8%;
+    }
+
+    .information > * {
+        line-height: 2rem !important;
+    }
+
+    .information h1 {
+        font-size: 2rem;
+    }
 }

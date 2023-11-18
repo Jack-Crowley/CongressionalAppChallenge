@@ -86,7 +86,7 @@
                     }
                 </script>
             </div> -->
-            <div class="slide">
+            <!-- <div class="slide">
                 <h2>Step 3: Upload Student ID Picture</h2>
                 <input type="file" id="imageInput" accept="image/*" capture="environment" required onchange="loadFile(event)">
                 <span style="width: 60vw; display: flex; align-items: center; align-content: center;"><img id="output"
@@ -101,19 +101,19 @@
                     };
                 </script>
                 <button id="scanButton">Scan</button>
-                 <pre id="result"></pre>
-                <!-- <script src="/scripts/registration.js"></script> -->
-            </div> 
+                 <pre id="result"></pre> -->
+                <!-- <script src="/scripts/registration.js"></script>
+            </div>  -->
             <div class="slide">
                 <h2>Registration Complete</h2>
                 <button type="submit" class="submit">Submit</button>
             </div>
-            <!-- <div class="progress-bar"></div> -->
+            <div class="progress-bar"></div>
             <!-- ... (previous HTML code) ... -->
-            <!-- <div class="slide-navigation">
+            <div class="slide-navigation">
                 <button id="prev-button" style="float: left; width: 50%;">Previous</button>
                 <button id="next-button" style="float: right; width: 50%;">Next</button>
-            </div> -->
+            </div>
         </form>
     </div>
     <!-- <script src="/scripts/registration.js"></script> -->
@@ -125,7 +125,6 @@
         //import { createWorker } from 'tesseract.js';
         // import 'tesseract.js';
         let currentSlide = 0;
-        let scannedCEEB;
 
         function updateProgressBar() {
             const percent = ((currentSlide + 1) / slides.length) * 100;
@@ -142,8 +141,74 @@
             });
             currentSlide = slideNumber;
             //updateButtons();
-            //updateProgressBar();
+            updateProgressBar();
         }
+
+        submitButton = document.querySelector('button.submit');
+        submitButton.addEventListener('click', () => {
+            console.log('enter submit page')
+            let scannedCEEB;
+                const imageInput = document.getElementById('imageInput');
+                const schoolInput = document.getElementById('school');
+                const file = imageInput.files[0];
+                if (file) {
+                    (async () => {
+                        //await worker.load();
+                        //await worker.loadLanguage('eng');
+                        //await worker.initialize('eng');
+                        const worker = await Tesseract.createWorker();
+                        const { data: { text } } = await worker.recognize(file);
+                        //resultElement.textContent = text;
+                        console.log(text);
+                        let startInd = text.indexOf("CEEB: ");
+                        let endInd = startInd + "CEEB: 123456".length;
+                        console.log(text.substring(startInd+6, endInd));
+                        console.log(scannedCEEB)
+                        await worker.terminate();
+                    })
+                };
+                if (1 !== 1) {
+                    //console.log(text)
+                    console.log(scannedCEEB, schoolInput.value)
+                    alert('School ID does not match selected school. Please select a better image or match your selected school with your ID.')
+                } else {
+                    //console.log('submitting')
+                    //const dropdown = document.querySelector('input.school')
+                    //const selectedOption = dropdown.options[dropdown.selectedIndex];
+                    //const selectedValue = selectedOption.value;
+                    //console.log(selectedValue, selectedOption)
+                    let data = {
+                        name: document.querySelector("input.name").value,
+                        zipCode: document.querySelector("input.zipCode").value,
+                        school: selectedValue,
+                        gradYear: document.querySelector("input.gradYear").value,
+                        email: document.querySelector("input.email").value,
+                        phone: document.querySelector("input.phone").value
+                    }
+
+                    let options = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    };
+
+                    fetch('/registration', options)
+                        .then(response => window.location.href="/")
+                        .then(data => {
+                            window.location.href="/";
+                            console.log(data)
+                        })
+                        .catch(error => {
+                            window.location.href="/";
+                            console.error('Error:', error);
+                        });
+
+                    console.log(options)
+                }
+            }
+        );
 
         document.addEventListener('DOMContentLoaded', () => {
             const imageInput = document.getElementById('imageInput');
@@ -163,10 +228,9 @@
                         //console.log(text);
                         let startInd = text.indexOf("CEEB: ");
                         let endInd = startInd + "CEEB: 123456".length;
-                        scannedCEEB = text.substring(startInd+6, endInd);
+                        let scannedCEEB = text.substring(startInd+6, endInd);
                         console.log(scannedCEEB)
                         await worker.terminate();
-                        alert('Scanned successfully.')
                     })();
                     //const t = new Tesseract();
                     //t.setImage(file);
@@ -174,25 +238,6 @@
                     //resultElement.textContent = t.getText();
                 }
             });
-
-            submitButton = document.querySelector('button.submit');
-            submitButton.addEventListener('click', () => {
-                console.log('enter submit page')
-                console.log(scannedCEEB)
-                const schoolInput = document.querySelector('input.school')
-                console.log(schoolInput.value)
-                if (scannedCEEB !== schoolInput.value) {
-                    //console.log(text)
-                    console.log(scannedCEEB, schoolInput.value)
-                    alert('School ID does not match selected school. Please select a better image or match your selected school with your ID.')
-                } else {
-                    console.log('woohoo!!')
-                    }
-                }
-            )
-
-        //document.addEventListener('DOMContentLoaded', () => {
-            
         });
         
 
@@ -227,8 +272,8 @@
         nextButton.addEventListener('click', () => moveSlide(1));
 
         // Initial setup
-        //updateButtons();
-        //showSlide(currentSlide);
+        updateButtons();
+        showSlide(currentSlide);
 
     </script>
 </body>

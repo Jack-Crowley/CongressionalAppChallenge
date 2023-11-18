@@ -80,7 +80,8 @@ body {
     margin: 0 50px;
 }
 
-.activities, .upcoming {
+.activities,
+.upcoming {
     width: 90vw;
     background-color: #889696;
     padding: 3vh 5vw;
@@ -90,10 +91,11 @@ body {
 table {
     width: 80%;
     margin-left: 10%;
-    border-collapse:collapse;
+    border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
     font-size: 1.4rem;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -106,7 +108,7 @@ tr {
 
 .certificate a {
     text-decoration: none;
-    color:black;
+    color: black;
     background-color: #B8BDB5;
     display: inline-block;
     padding: 3px;
@@ -128,7 +130,7 @@ tr {
 }
 
 .upcoming .activities-header {
-    color:rgb(219, 219, 219);
+    color: rgb(219, 219, 219);
 }
 
 .events {
@@ -152,7 +154,8 @@ tr {
 .event .info h1 {
     font-size: 1.4rem;
     margin: 10px 0;
-    padding-left: 10px;;
+    padding-left: 10px;
+    ;
 }
 
 .event .info {
@@ -170,4 +173,50 @@ tr {
 
 .event:hover {
     cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+    .group {
+        display: block;
+    }
+
+    .banner img {
+        border-radius: 20px 20px 0 0;
+    }
+
+    .goal-header span {
+        display: none;
+    }
+
+    .progress {
+        display: block;
+        padding-bottom: 50px;
+    }
+
+    .subtitle {
+        display: none;
+    }
+
+    .events {
+        display: block;
+    }
+
+    .event {
+        margin-bottom: 50px;
+    }
+
+    table thead {
+        display: none;
+    }
+
+    table td {
+        display: flex;
+    }
+
+    table td::before {
+        content: attr(label);
+        font-weight: bold;
+        display: block;
+        margin-right: 50px;
+    }
 }

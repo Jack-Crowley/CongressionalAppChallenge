@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +10,21 @@
 
     <link rel="stylesheet" href="/styles/opportunities.css">
     <link rel="stylesheet" href="/styles/nav.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 </head>
+
 <body>
     <nav>
         <div class="name">
-            <a href=""><h1>CommuniTeens</h1></a>
+            <a href="">
+                <h1>CommuniTeens</h1>
+            </a>
+        </div>
+        <div class="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
         <div class="subheadings">
             <a href="/dashboard">Dashboard</a>
@@ -38,21 +49,74 @@
     </div>
     <div class="events">
         <h1 class="bigHeader">Opportunities</h1>
-        <% results.forEach((event) => { %>
-            <div class="event" onclick="window.location.href = '/event/<%=event.eventID%>'">
-                <div class="date">
-                    <h1 class="month"><%= new Date(event.date).toLocaleString('en-US', { month: 'short' }).toUpperCase() %></h1>
-                    <h1 class="day"><%= new Date(event.date).getDate() %></h1>
+        <div class="eventsContainer">
+            <% results.forEach((event)=> { %>
+                <div class="event" data-eventID="<%=event.eventID%>"
+                    onclick="window.location.href = '/event/<%=event.eventID%>'">
+                    <div class="date">
+                        <h1 class="month">
+                            <%= new Date(event.date).toLocaleString('en-US', { month: 'short' }).toUpperCase() %>
+                        </h1>
+                        <h1 class="day">
+                            <%= new Date(event.date).getDate() %>
+                        </h1>
+                    </div>
+                    <div class="otherInfo">
+                        <h1 class="name">
+                            <%= event.name %>
+                        </h1>
+                        <h2 class="company">
+                            <%= event.company %>
+                        </h2>
+                        <h2 class="location">
+                            <%= event.address %>
+                        </h2>
+                    </div>
+                    <div class="hiddenInfo" data-id="<%=event.eventID%>">
+                        <h2>
+                            <%=event.eventID%>
+                        </h2>
+                        <h2>
+                            <%=event.date%>
+                        </h2>
+                        <h2>
+                            <%=event.keywords%>
+                        </h2>
+                        <h2>
+                            <%=event.registrationCount%>
+                        </h2>
+                    </div>
                 </div>
-                <div class="otherInfo">
-                    <h1 class="name"><%= event.name %></h1>
-                    <h2 class="company"><%= event.company %></h2>
-                    <h2 class="location"><%= event.address %></h2>
-                </div>
-             </div>
-        <% }) %>
+                <% }) %>
+        </div>
     </div>
+
+    <div class="info">
+        <% upcomingEvents.forEach((event)=> { %>
+            <div class="dataEvent">
+                <h2>
+                    <%=event.ID%>
+                </h2>
+                <h2>
+                    <%=event.date%>
+                </h2>
+                <h2>
+                    <%=event.keywords%>
+                </h2>
+                <h2>
+                    <%=event.registrationCount%>
+                </h2>
+            </div>
+            <% }) %>
+                <h2>
+                    <%=pastEvents%>
+                </h2>
+    </div>
+
     <script src="/scripts/opportunities.js"></script>
+    <script src="/scripts/ai.js"></script>
+    <script src="/scripts/nav.js"></script>
 
 </body>
+
 </html>
