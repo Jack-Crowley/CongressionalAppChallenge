@@ -62,7 +62,7 @@
         <div class="events">
             <% upcomingEvents.forEach((event)=> { %>
                 <div class="event" onclick="window.location.href='/event/<%=event.eventID%>'">
-                    <div class="image"><img src="/images/trash-area.png" alt=""></div>
+                    <div class="image"><img src="/images/service<%=event.eventID%>.jpg" alt=""></div>
                     <div class="info">
                         <h1>
                             <%= event.name %>

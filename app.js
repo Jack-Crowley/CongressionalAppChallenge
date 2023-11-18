@@ -157,7 +157,6 @@ app.post("/opportunities/:eventID", async (req, res) => {
 
 async function accountRegisterIndex(req, res, next) {
     if (!req.oidc.isAuthenticated()) {
-        console.log('lol')
         next();
     }
     else {
@@ -289,6 +288,7 @@ app.get("/event/:eventID", accountRegister, async (req, res) => {
     let eventDescription;
     let company;
     let count;
+    let id;
     let location;
     let inEvent;
 
@@ -303,6 +303,7 @@ app.get("/event/:eventID", accountRegister, async (req, res) => {
                 eventName = results[0].name
                 eventDescription = results[0].description
                 date = results[0].date
+                id = results[0].ID
             }
             resolve(0)
         });
@@ -424,6 +425,38 @@ app.get("/event/register/:eventID", accountRegister, async (req, res) => {
     });
 });
 
+app.get("/certificate/:id", accountRegister, async (req, res) => {
+    let id = req.params.id;
+    let studentID = await getStudentID(req.oidc.user.email);
+
+    db.execute(getSQLQuery("getCertificate"), [id], (error, results) => {
+        if (error) {
+            console.log(error)
+            res.status(500).send(error);
+        }
+        else {
+            if (results.length == 0) {
+                res.send({})
+                return
+            }
+            db.execute(getSQLQuery("getSchoolPermission"), [results[0].id], (error, schoolBoolean) => {
+                if (error) {
+                    console.log(error)
+                    res.status(500).send(error);
+                }
+                else {
+                    if (schoolBoolean[0].school) {
+                        res.send(results)
+                    }
+                    else {
+                        res.send({"error":"no permission"})
+                    }
+                }
+            });
+        }
+    });
+});
+
 app.get("/group/:groupid", accountRegister, async (req, res) => {
     let studentID = await getStudentID(req.oidc.user.email)
     let groupID = req.params.groupid;
@@ -432,6 +465,7 @@ app.get("/group/:groupid", accountRegister, async (req, res) => {
     let members;
     let events;
     let inGroup;
+    console.log(groupID)
 
     // Name and email
     await new Promise((resolve, reject) => {
@@ -441,6 +475,10 @@ app.get("/group/:groupid", accountRegister, async (req, res) => {
                 res.status(500).send(error);
             }
             else {
+                if (results.length == 0) {
+                    res.redirect("/groups")
+                    return
+                }
                 groupName = results[0].name
                 groupEmail = results[0].email
 
@@ -462,6 +500,7 @@ app.get("/group/:groupid", accountRegister, async (req, res) => {
             resolve(0)
         });
     });
+
 
     // Events
     await new Promise((resolve, reject) => {
@@ -493,7 +532,7 @@ app.get("/group/:groupid", accountRegister, async (req, res) => {
 
     console.log(events)
 
-    res.render('group', { groupName: groupName, groupEmail: groupEmail, members: members, events: events, inGroup: inGroup })
+    res.render('group', { groupID: groupID,groupName: groupName, groupEmail: groupEmail, members: members, events: events, inGroup: inGroup })
 });
 
 app.listen(PORT, () => {

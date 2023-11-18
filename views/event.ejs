@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +11,18 @@
     <link rel="stylesheet" href="/styles/event.css">
     <link rel="stylesheet" href="/styles/nav.css">
 </head>
+
 <body>
     <nav>
         <div class="name">
-            <a href=""><h1>CommuniTeens</h1></a>
+            <a href="">
+                <h1>CommuniTeens</h1>
+            </a>
+        </div>
+        <div class="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
         <div class="subheadings">
             <a href="/dashboard">Dashboard</a>
@@ -22,22 +31,47 @@
             <a href="/account">Account</a>
         </div>
     </nav>
-    <div class="banner">
+    <div class="banner" data-id="<%=id%>">
+        <img src="/images/service<%=id%>.jpg" alt="">
         <div class="information">
-            <h1><%= name %></h1>
+            <h1>
+                <%= name %>
+            </h1>
             <div class="line"></div>
-            <h3>Hosted By: <span><%= company%></span></h3>
-            <% date = new Date(date) %>
-            <h3>Date: <%=`${date.getMonth()+1}/${date.getDate()}/${date.getYear()+1900}`%></h3>
-            <h3>Time: <%=date.toLocaleString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true })%></h3>
-            <h3>Members Attending: <%= count %></h3>
-            <h3>Location: <%= location %></h3>
-            <h4><%= description%></h4>
-            <% if (!inEvent) { %>
-                <a href="/event/register/<%=id%>" class="register">Register</a>
-            <% } %>
+            <h3>Hosted By: <span>
+                    <%= company%>
+                </span></h3>
+            <% date=new Date(date) %>
+                <h3>Date: <%=`${date.getMonth()+1} /${date.getDate()}/${date.getYear()+1900}`%>
+                </h3>
+                <h3>Time: <%=date.toLocaleString('en-US', { hour: 'numeric' , minute: '2-digit' , hour12: true })%></h3>
+                <h3>Members Attending: <%= count %>
+                </h3>
+                <h3>Location: <%= location %>
+                </h3>
+                <h4>
+                    <%= description%>
+                </h4>
+                <% if (!inEvent) { %>
+                    <a href="/event/register/<%=id%>" class="register">Register</a>
+                    <% } %>
         </div>
     </div>
-    
+
+    <script>
+        let banner = document.querySelector(".banner")
+        let id = banner.dataset.id
+
+        banner.style.backgroundImage = `-webkit-linear-gradient(left,
+            rgba(63, 80, 55, 0) 0,
+            rgba(63, 80, 55, 0) 40%,
+            rgba(63, 80, 55, .5) 50%,
+            rgb(63, 80, 55) 60%),
+            url("/images/service${id}.jpg")`;
+    </script>
+
+    <script src="/scripts/nav.js"></script>
+
 </body>
+
 </html>

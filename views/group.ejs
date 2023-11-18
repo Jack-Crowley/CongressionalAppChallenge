@@ -19,6 +19,11 @@
                 <h1>CommuniTeens</h1>
             </a>
         </div>
+        <div class="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <div class="subheadings">
             <a href="/dashboard">Dashboard</a>
             <a href="/opportunities">Opportunities</a>
@@ -28,7 +33,7 @@
     </nav>
     <div class="group">
         <div class="top">
-            <img src="/images/homepage.png" alt="">
+            <img src="/images/group<%=groupID%>.jpg" alt="">
             <div class="information">
                 <h1>
                     <%=groupName%>
@@ -52,9 +57,9 @@
             </div>
         </div>
         <div class="events activeSection">
-            <% if (events.length > 1) { %>
+            <% if (events.length > 0) { %>
                 <% events.forEach((event)=> { %>
-                    <div class="event">
+                    <div class="event" onclick="window.location.href = '/event/<%=event.ID%>'">
                         <div class="date">
                             <h1 class="month">
                                 <%= new Date(event.date).toLocaleString('en-US', { month: 'short' }).toUpperCase() %>
@@ -67,8 +72,8 @@
                             <h1 class="name">
                                 <%= event.name %>
                             </h1>
-                            <h2 class="company">n/a</h2>
-                            <h2 class="location">n/a</h2>
+                            <h2 class="company"><%=event.company%></h2>
+                            <h2 class="location"><%=event.address%></h2>
                         </div>
                     </div>
                 <% })} else { %>
@@ -89,6 +94,8 @@
         </div>
     </div>
     <script src="/scripts/group.js"></script>
+    <script src="/scripts/nav.js"></script>
+
 </body>
 
 </html>
