@@ -252,7 +252,8 @@ app.get("/dashboard", accountRegister, async (req, res) => {
 });
 
 app.get("/account", accountRegister, async (req, res) => {
-    db.execute(getSQLQuery("getStudentInfo"), (error, results) => {
+    let studentID = await getStudentID(req.oidc.user.email);
+    db.execute(getSQLQuery("getStudentInfo"), [studentID], (error, results) => {
         if (error)
             res.status(500).send(error);
         else
