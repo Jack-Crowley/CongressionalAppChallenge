@@ -79,12 +79,8 @@ app.get("/opportunities", async (req, res) => {
 });
 
 app.post("/opportunities", async (req, res) => {
-    console.log(req.body)
-    console.log(req.body.keyword)
-
     let date = req.body.date
     if (date != '') {
-        console.log("VALID DATE")
         date = new Date(`20${date.replace(/(\d{2})\/(\d{2})\/(\d{2})/, '$3-$1-$2')}`)
         date = date.toISOString().split('T')[0]
     }
@@ -94,11 +90,6 @@ app.post("/opportunities", async (req, res) => {
 
     let zipcode = req.body.zipcode
     let word = `%`+req.body.keyword+`%`
-
-    console.log(date)
-    console.log(zipcode)
-    console.log(word)
-
 
     db.execute(getSQLQuery("searchOpportunity"), [word,word,word,date,date,zipcode,zipcode], (error, results) => {
         if (error) {
