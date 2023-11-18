@@ -268,13 +268,13 @@ app.post("/registration", async (req, res) => {
     console.log(req.body.name)
     console.log(name)
 
-    db.execute(getSQLQuery("addStudent"), [req.body.email, 1, req.body.name.split(" ")[0], req.body.name.split(" ")[1], req.body.gradYear, 2], (error, results) => {
+    db.execute(getSQLQuery("addStudent"), [req.body.email, 1, req.body.name.split(" ")[0], req.body.name.split(" ")[1], req.body.gradYear, 2, req.body.phone], (error, results) => {
         if (error) {
             console.log(error)
             res.status(500).send(error);
         }
         else {
-            res.send({data:'works'})
+            // res.send({data:'works'})
             res.redirect("/")
         }
     });
