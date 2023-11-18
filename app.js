@@ -256,7 +256,7 @@ app.get("/account", accountRegister, async (req, res) => {
     res.render('account')
 });
 
-app.get("/registration", accountRegister, async (req, res) => {
+app.get("/registration", async (req, res) => {
     res.render('registration')
 });
 

@@ -145,45 +145,6 @@
             //updateProgressBar();
         }
 
-        submitButton = document.querySelector('button.submit');
-        submitButton.addEventListener('click', () => {
-            console.log('enter submit page')
-            if (scannedCEEB !== schoolInput.value) {
-                //console.log(text)
-                console.log(scannedCEEB, schoolInput.value)
-                alert('School ID does not match selected school. Please select a better image or match your selected school with your ID.')
-            } else {
-                console.log('submitting')
-                const dropdown = document.querySelector('input.school')
-                //const selectedOption = dropdown.options[dropdown.selectedIndex];
-                //const selectedValue = selectedOption.value;
-                //console.log(selectedValue, selectedOption)
-                let data = {
-                    name: document.querySelector("input.name").value,
-                    zipCode: document.querySelector("input.zipCode").value,
-                    school: dropdown.value,//selectedValue,
-                    gradYear: document.querySelector("input.gradYear").value,
-                    email: document.querySelector("input.email").value,
-                    phone: document.querySelector("input.phone").value
-                }
-
-                let options = {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                };
-                
-                fetch('/registration', options)
-                    .then(response => response.json())
-                    .then(data => {
-                        console.log(data)    
-                    })
-                }
-            }
-        );
-
         document.addEventListener('DOMContentLoaded', () => {
             const imageInput = document.getElementById('imageInput');
             const scanButton = document.getElementById('scanButton');
@@ -205,6 +166,7 @@
                         scannedCEEB = text.substring(startInd+6, endInd);
                         console.log(scannedCEEB)
                         await worker.terminate();
+                        alert('Scanned successfully.')
                     })();
                     //const t = new Tesseract();
                     //t.setImage(file);
@@ -212,6 +174,25 @@
                     //resultElement.textContent = t.getText();
                 }
             });
+
+            submitButton = document.querySelector('button.submit');
+            submitButton.addEventListener('click', () => {
+                console.log('enter submit page')
+                console.log(scannedCEEB)
+                const schoolInput = document.querySelector('input.school')
+                console.log(schoolInput.value)
+                if (scannedCEEB !== schoolInput.value) {
+                    //console.log(text)
+                    console.log(scannedCEEB, schoolInput.value)
+                    alert('School ID does not match selected school. Please select a better image or match your selected school with your ID.')
+                } else {
+                    console.log('woohoo!!')
+                    }
+                }
+            )
+
+        //document.addEventListener('DOMContentLoaded', () => {
+            
         });
         
 
