@@ -71,11 +71,46 @@ async function accountRegister(req, res, next) {
 }
 
 app.get("/opportunities", async (req, res) => {
+    let upcomingEvents;
+    let pastEvents;
+
+    let studentID = await getStudentID(req.oidc.user.email)
+
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getUpcomingForAI"), [studentID], (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                upcomingEvents = results;
+            }
+            resolve(0)
+        });
+    });
+
+    await new Promise((resolve, reject) => {
+        db.execute(getSQLQuery("getPastForAI"), (error, results) => {
+            if (error) {
+                console.log(error)
+                res.status(500).send(error);
+            }
+            else {
+                pastEvents = results
+            }
+            resolve(0)
+        });
+    });
+
     db.execute(getSQLQuery("getAllUpcomingEvents"), (error, results) => {
         if (error)
             res.status(500).send(error);
-        res.render('opportunities', { results: results })
+        res.render('opportunities', { results: results, pastEvents:pastEvents, upcomingEvents:upcomingEvents })
     });
+});
+
+app.get("/ai", async (req, res) => {
+    res.render("ai")
 });
 
 app.post("/opportunities", async (req, res) => {

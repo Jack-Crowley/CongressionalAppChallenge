@@ -6,18 +6,6 @@ function clearEvents() {
     })
 }
 
-`<div class="event" onclick="window.location.href = '/event/<%=event.eventID%>'">
-    <div class="date">
-        <h1 class="month"><%= new Date(event.date).toLocaleString('en-US', { month: 'short' }).toUpperCase() %></h1>
-        <h1 class="day"><%= new Date(event.date).getDate() %></h1>
-    </div>
-    <div class="otherInfo">
-        <h1 class="name"><%= event.name %></h1>
-        <h2 class="company"><%= event.company %></h2>
-        <h2 class="location"><%= event.address %></h2>
-    </div>
-</div>`
-
 function createEvent(i, d, n, c, l) {
     let event = document.createElement("div")
 

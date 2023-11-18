@@ -107,3 +107,7 @@
     line-height: 1;
     font-weight: lighter;
 }
+
+.hiddenInfo {
+    display: none;
+}
