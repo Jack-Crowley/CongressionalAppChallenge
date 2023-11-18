@@ -79,7 +79,7 @@
                         <td><%= event.hoursServed %></td>
                         <% date = new Date(event.date)%>
                         <td><%=`${date.getMonth()+1}/${date.getDate()}/${date.getYear()+1900}`%></td>
-                        <td class="certificate"><a href="#">Copy Link</a></td>
+                        <td class="certificate"><a href="/certificate/<%=event.id%>">Copy Link</a></td>
                     </tr>
                 <% }) %>
             </tbody>
